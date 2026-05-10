@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TvPeru-QGEM-Studio
 
-## Getting Started
+**QGEM Studio** es el sistema web de recolección de datos para el programa de TV en vivo *Que Gane el Mejor* (TV Perú), desarrollado por BroadStream Coders.
 
-First, run the development server:
+## Propósito del Proyecto
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+El sistema permite a los especialistas de producción (usuarios con bajo perfil técnico) llenar la información de cada juego **antes del en vivo**. El sistema exporta los archivos generados en formato JSON o ZIP (si incluyen imágenes), los cuales se cargan posteriormente en un cliente **Unity**. Dicho cliente lee estos datos y renderiza los juegos en pantalla durante la transmisión del programa.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Características Principales
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Orientado a la exportación**: Exportación siempre por archivo (JSON o ZIP con imágenes). Sin backend, sin base de datos.
+- **Múltiples "Colectores"**: Cada juego (ej. Deletreo, Cálculo Mental, Mi Libro Favorito, etc.) tiene su propio "colector" o workspace de trabajo.
+- **UI/UX Consistente**: Tema dark por defecto, usando componentes compartidos para asegurar un flujo de trabajo intuitivo y reducir la duplicación de código.
+- **Feedback Visible**: Interfaces claras con prevención de errores para usuarios no técnicos.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Stack Tecnológico
 
-## Learn More
+- **Framework**: Next.js 16 (App Router)
+- **UI Library**: React 19
+- **Estilos**: Tailwind CSS v4, shadcn/ui
+- **Lenguaje**: TypeScript (Strict)
 
-To learn more about Next.js, take a look at the following resources:
+## Instalación y Ejecución
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Clona el repositorio:
+   ```bash
+   git clone <repo_url>
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. Instala las dependencias:
+   ```bash
+   npm install
+   ```
 
-## Deploy on Vercel
+3. Inicia el servidor de desarrollo:
+   ```bash
+   npm run dev
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4. Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver la aplicación.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Estructura del Proyecto
+
+El código está estructurado para maximizar la reutilización de componentes entre los distintos colectores (workspaces):
+
+- `src/app/workspaces/[nombre]`: Contiene la lógica de estado y los schemas de datos específicos de cada juego.
+- `src/components/shared`: Componentes UI estructurales reutilizados en todos los colectores (ej. `WorkspaceShell`, `FileActions`, `BoardColumn`).
+- `src/hooks`: Hooks de estado global o reutilizable (ej. `use-workspace-groups`, `use-image-picker`).
+- `src/helpers`: Funciones utilitarias para la persistencia, exportación y validación de los datos.
+
+## Convenciones de Desarrollo
+
+- **Un colector = un `page.tsx` liviano**: El componente de página solo orquesta el estado, y todo lo visual viene de componentes compartidos.
+- **Componentes por contrato**: Se utilizan componentes genéricos que reciben `children` en lugar de crear componentes altamente acoplados al contenido de cada juego.
+- **IDs de entidades**: Siempre se utiliza `nanoid()` para generar IDs (ej. rondas, fotos), nunca índices de arreglos.
+
+Para conocer las tareas pendientes y recomendaciones, consulta el archivo `Roadmap.md`.

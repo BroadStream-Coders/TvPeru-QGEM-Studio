@@ -87,7 +87,7 @@ export default function Home() {
             <Trophy className="h-3.5 w-3.5" />
           </div>
           <span className="text-sm font-bold tracking-tight text-foreground/90">
-            QGEM App Center
+            QGEM Studio
           </span>
         </div>
         <div className="ml-auto">
