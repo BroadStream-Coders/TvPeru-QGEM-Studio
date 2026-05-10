@@ -16,6 +16,12 @@ import {
 
 const workspaces = [
   {
+    name: "Mi Libro Favorito",
+    description: "Preguntas y respuestas de libros",
+    href: "/workspaces/mi-libro-favorito",
+    icon: BookOpen,
+  },
+  {
     name: "Deletreo",
     description: "Gestión de palabras por rondas",
     href: "/workspaces/deletreo",
@@ -26,12 +32,6 @@ const workspaces = [
     description: "Preguntas rápidas de cálculo",
     href: "/workspaces/calculo-mental",
     icon: Calculator,
-  },
-  {
-    name: "Mi Libro Favorito",
-    description: "Preguntas y respuestas de libros",
-    href: "/workspaces/mi-libro-favorito",
-    icon: BookOpen,
   },
   {
     name: "Intruso",
@@ -74,6 +74,12 @@ const workspaces = [
     description: "Preguntas de verdadero o falso",
     href: "/workspaces/la-sabes-o-no",
     icon: HelpCircle,
+  },
+  {
+    name: "Galería de Fotos",
+    description: "Colector de fotografías",
+    href: "/workspaces/galeria-fotos",
+    icon: ImageIcon,
   },
 ];
 
