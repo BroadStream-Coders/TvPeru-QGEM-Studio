@@ -2,14 +2,14 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { BookOpen } from "lucide-react";
-import { saveAsZip, loadZipFile } from "@/helpers/persistence";
+import { saveAsJson, loadJsonFile } from "@/helpers/persistence";
 import { GroupsContainer } from "@/components/shared/group-column/layout/GroupsContainer";
 import { useWorkspaceHeader } from "@/hooks/use-workspace-header";
 import { useWorkspaceGroups } from "@/hooks/use-workspace-groups";
-import { LibroColumn } from "./components/LibroColumn";
-import { PlayersColumn } from "./components/PlayersColumn";
+import { Column } from "./components/Column";
+import { Players } from "./components/Players";
 
-const DEFAULT_FILENAME = "MiLibroFavorito.zip";
+const DEFAULT_FILENAME = "MiLibroFavorito.json";
 
 interface QuestionAnswer {
   question: string;
@@ -22,14 +22,11 @@ interface LibroGroup {
 
 interface PlayerData {
   name: string;
-  imagePreview: string | null;
-  imageFile?: File | null;
 }
 
 interface SessionData {
   players: {
     playerName: string;
-    pictureFile: string | null;
     maxHealth: number;
   }[];
   groups: LibroGroup[];
@@ -44,8 +41,8 @@ const initialGroups: QuestionAnswer[][] = [
 
 export default function MiLibroFavoritoPage() {
   const [players, setPlayers] = useState<PlayerData[]>([
-    { name: "", imagePreview: null },
-    { name: "", imagePreview: null },
+    { name: "" },
+    { name: "" },
   ]);
 
   const setHeader = useWorkspaceHeader((s) => s.setHeader);
@@ -68,14 +65,6 @@ export default function MiLibroFavoritoPage() {
     );
   };
 
-  const handlePlayerImageChange = (index: number, file: File, url: string) => {
-    setPlayers((prev) =>
-      prev.map((p, i) =>
-        i === index ? { ...p, imageFile: file, imagePreview: url } : p,
-      ),
-    );
-  };
-
   const handleQuickLoad = (groupIndex: number, matrix: string[][]) => {
     replaceGroup(
       groupIndex,
@@ -84,11 +73,8 @@ export default function MiLibroFavoritoPage() {
   };
 
   const handleSave = useCallback(async () => {
-    const playersMetadata = players.map((p, i) => ({
+    const playersMetadata = players.map((p) => ({
       playerName: p.name,
-      pictureFile: p.imageFile
-        ? `images/player_${i + 1}.${p.imageFile.name.split(".").pop()}`
-        : null,
       maxHealth: 3,
     }));
 
@@ -97,60 +83,26 @@ export default function MiLibroFavoritoPage() {
       groups: groups.map((slots) => ({ slots })),
     };
 
-    const filesToInclude = players
-      .map((p, i) => {
-        if (!p.imageFile) return null;
-        const ext = p.imageFile.name.split(".").pop();
-        return { name: `images/player_${i + 1}.${ext}`, file: p.imageFile };
-      })
-      .filter((item): item is { name: string; file: File } => item !== null);
-
-    await saveAsZip(DEFAULT_FILENAME, sessionData, filesToInclude);
+    await saveAsJson(DEFAULT_FILENAME, sessionData);
   }, [players, groups]);
 
   const handleLoad = useCallback(
     async (file: File) => {
       try {
-        const zip = await loadZipFile(file);
-        const dataFile = zip.file("sessionData.json");
-        if (!dataFile) {
-          alert("El ZIP no contiene un archivo sessionData.json válido.");
-          return;
-        }
-
-        const content = await dataFile.async("string");
-        const sessionData = JSON.parse(content) as SessionData;
+        const sessionData = await loadJsonFile<SessionData>(file);
+        if (!sessionData) return;
 
         if (Array.isArray(sessionData.players)) {
-          const loadedPlayers = await Promise.all(
-            sessionData.players.map(async (p) => {
-              let imageFile = null;
-              let imagePreview = null;
-              if (p.pictureFile) {
-                const entry = zip.file(p.pictureFile);
-                if (entry) {
-                  const blob = await entry.async("blob");
-                  imageFile = new File(
-                    [blob],
-                    p.pictureFile.split("/").pop() || "image",
-                    {
-                      type: blob.type,
-                    },
-                  );
-                  imagePreview = URL.createObjectURL(blob);
-                }
-              }
-              return { name: p.playerName || "", imageFile, imagePreview };
-            }),
+          setPlayers(
+            sessionData.players.map((p) => ({ name: p.playerName || "" })),
           );
-          setPlayers(loadedPlayers);
         }
 
         if (Array.isArray(sessionData.groups)) {
           setGroups(sessionData.groups.map((g) => g.slots));
         }
       } catch {
-        alert("Error al procesar el archivo ZIP.");
+        alert("Error al procesar el archivo JSON.");
       }
     },
     [setPlayers, setGroups],
@@ -164,7 +116,7 @@ export default function MiLibroFavoritoPage() {
     setHeader({
       title: "Mi Libro Favorito",
       icon: <BookOpen className="h-3 w-3" />,
-      format: "zip",
+      format: "json",
       onSave: handleSave,
       onLoad: handleLoad,
     });
@@ -175,10 +127,9 @@ export default function MiLibroFavoritoPage() {
       <div className="flex h-full overflow-hidden">
         {/* Player info column — se mantiene fuera del sistema de grupos */}
         <div className="shrink-0 overflow-y-auto py-6 px-6">
-          <PlayersColumn
+          <Players
             players={players}
             onPlayerNameChange={handlePlayerNameChange}
-            onPlayerImageChange={handlePlayerImageChange}
           />
         </div>
 
@@ -188,7 +139,7 @@ export default function MiLibroFavoritoPage() {
         <div className="flex-1 min-w-0">
           <GroupsContainer onAddGroup={addGroup} addLabel="Agregar ronda">
             {groups.map((slots, groupIndex) => (
-              <LibroColumn
+              <Column
                 key={groupIndex}
                 index={groupIndex + 1}
                 items={slots}

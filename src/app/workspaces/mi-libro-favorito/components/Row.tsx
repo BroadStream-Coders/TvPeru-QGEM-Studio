@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 
-interface LibroRowProps {
+interface RowProps {
   index: number;
   question: string;
   answer: string;
@@ -13,14 +13,14 @@ interface LibroRowProps {
   onRemove: () => void;
 }
 
-export function LibroRow({
+export function Row({
   index,
   question,
   answer,
   onQuestionChange,
   onAnswerChange,
   onRemove,
-}: LibroRowProps) {
+}: RowProps) {
   return (
     <div className="flex flex-col gap-2 group p-3 rounded-lg border border-border bg-background/50 transition-colors hover:bg-background">
       <div className="flex items-center gap-2">

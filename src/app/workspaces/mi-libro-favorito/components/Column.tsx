@@ -5,7 +5,7 @@ import { GroupFooter } from "@/components/shared/group-column/layout/GroupFooter
 import { RowsContainer } from "@/components/shared/group-column/components/RowsContainer";
 import { AddRowButton } from "@/components/shared/group-column/components/AddRowButton";
 import { QuickLoad } from "@/components/shared/group-column/components/QuickLoad";
-import { LibroRow } from "./LibroRow";
+import { Row } from "./Row";
 
 const MAX_CAPACITY = 30;
 
@@ -14,7 +14,7 @@ interface QuestionAnswer {
   answer: string;
 }
 
-interface LibroColumnProps {
+interface ColumnProps {
   index: number;
   items: QuestionAnswer[];
   onItemChange: (
@@ -28,7 +28,7 @@ interface LibroColumnProps {
   onQuickLoad: (data: string[][]) => void;
 }
 
-export function LibroColumn({
+export function Column({
   index,
   items,
   onItemChange,
@@ -36,7 +36,7 @@ export function LibroColumn({
   onRemoveItem,
   onRemoveColumn,
   onQuickLoad,
-}: LibroColumnProps) {
+}: ColumnProps) {
   const handleAddItem = () => {
     if (items.length >= MAX_CAPACITY) return;
     onAddItem();
@@ -52,7 +52,7 @@ export function LibroColumn({
     >
       <RowsContainer>
         {items.map((item, itemIdx) => (
-          <LibroRow
+          <Row
             key={itemIdx}
             index={itemIdx}
             question={item.question}

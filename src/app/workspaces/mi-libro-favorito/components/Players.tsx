@@ -4,26 +4,18 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Users } from "lucide-react";
-import { ImagePicker } from "@/components/shared/ImagePicker";
 
 interface PlayerData {
   name: string;
-  imagePreview: string | null;
 }
 
 interface PlayerSlotProps {
   index: number;
   data: PlayerData;
   onNameChange: (val: string) => void;
-  onImageChange: (file: File, url: string) => void;
 }
 
-function PlayerSlot({
-  index,
-  data,
-  onNameChange,
-  onImageChange,
-}: PlayerSlotProps) {
+function PlayerSlot({ index, data, onNameChange }: PlayerSlotProps) {
   return (
     <div className="flex flex-col gap-3 p-4 rounded-xl border border-border bg-background/40 transition-all hover:bg-background/60 hover:border-brand/30">
       <div className="flex items-center gap-2 mb-1">
@@ -31,24 +23,17 @@ function PlayerSlot({
           <span className="text-2xs font-bold">{index + 1}</span>
         </div>
         <span className="text-xs font-bold text-foreground">
-          Jugador {index + 1}
+          Jugador {index === 0 ? "Izquierda" : "Derecha"}
         </span>
       </div>
 
       <div className="flex flex-col gap-4 items-center">
-        <div className="w-24">
-          <ImagePicker
-            value={data.imagePreview ?? undefined}
-            onChange={onImageChange}
-          />
-        </div>
-
         <div className="w-full flex flex-col gap-1.5">
           <Label
             htmlFor={`player-name-${index}`}
             className="text-2xs font-mono font-medium text-muted-foreground uppercase tracking-widest text-center"
           >
-            Nombre Equipo / Jugador
+            Nombre Equipo
           </Label>
           <Input
             id={`player-name-${index}`}
@@ -64,14 +49,12 @@ function PlayerSlot({
   );
 }
 
-export function PlayersColumn({
+export function Players({
   players,
   onPlayerNameChange,
-  onPlayerImageChange,
 }: {
   players: PlayerData[];
   onPlayerNameChange: (index: number, val: string) => void;
-  onPlayerImageChange: (index: number, file: File, url: string) => void;
 }) {
   return (
     <Card className="flex flex-col h-full w-[280px] shrink-0 rounded-xl border border-border bg-card shadow-none gap-0 py-0 overflow-hidden">
@@ -92,7 +75,6 @@ export function PlayersColumn({
               index={idx}
               data={player}
               onNameChange={(val) => onPlayerNameChange(idx, val)}
-              onImageChange={(file, url) => onPlayerImageChange(idx, file, url)}
             />
           ))}
         </div>
