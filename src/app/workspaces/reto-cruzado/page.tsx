@@ -1,8 +1,8 @@
 "use client";
 
 import { useRef, useEffect, useCallback } from "react";
-import { Layers, Swords } from "lucide-react";
-import { saveAsZip, loadZipFile } from "@/helpers/persistence";
+import { Layers, Shuffle } from "lucide-react";
+import { saveAsJson, loadJsonFile } from "@/helpers/persistence";
 import { useWorkspaceHeader } from "@/hooks/use-workspace-header";
 import { LevelTabs } from "@/components/shared/LevelTabs";
 import { nanoid } from "nanoid";
@@ -28,21 +28,15 @@ import {
   Level4ViewRef,
   Level4Column,
 } from "./components/Level4View";
-import {
-  Level5View,
-  Level5ViewRef,
-  Level5Column,
-} from "./components/Level5View";
 
-const DEFAULT_FILENAME = "DueloCruzado.zip";
+const DEFAULT_FILENAME = "RetoCruzado.json";
 
-export default function DueloCruzadoPage() {
+export default function RetoCruzadoPage() {
   const level0Ref = useRef<Level0ViewRef>(null);
   const level1Ref = useRef<Level1ViewRef>(null);
   const level2Ref = useRef<Level2ViewRef>(null);
   const level3Ref = useRef<Level3ViewRef>(null);
   const level4Ref = useRef<Level4ViewRef>(null);
-  const level5Ref = useRef<Level5ViewRef>(null);
 
   const setHeader = useWorkspaceHeader((s) => s.setHeader);
   const resetHeader = useWorkspaceHeader((s) => s.resetHeader);
@@ -53,7 +47,6 @@ export default function DueloCruzadoPage() {
     const data2 = level2Ref.current?.getData() || [];
     const data3 = level3Ref.current?.getData() || [];
     const data4 = level4Ref.current?.getData() || [];
-    const data5 = level5Ref.current?.getData() || [];
 
     const exportData = {
       level0: { courses: data0 },
@@ -88,7 +81,7 @@ export default function DueloCruzadoPage() {
         groups: data3.map((col) => ({
           title: col.title,
           questions: col.rows.map((q) => ({
-            pairs: q.pairs.map((pair) => ({
+            pairs: q.pairs.slice(0, 3).map((pair) => ({
               leftText: pair.leftText,
               rightText: pair.rightText,
             })),
@@ -104,33 +97,10 @@ export default function DueloCruzadoPage() {
           })),
         })),
       },
-      level5: {
-        groups: data5.map((col) => ({
-          title: col.title,
-          questions: col.rows.map((q) => ({
-            imagePath: q.file ? `images/${nanoid(4)}_${q.file.name}` : "",
-          })),
-        })),
-      },
     };
 
-    const filesToInclude: { name: string; file: File }[] = [];
-    data5.forEach((col, cIdx) => {
-      col.rows.forEach((row, rIdx) => {
-        if (row.file) {
-          const path = exportData.level5.groups[cIdx].questions[rIdx].imagePath;
-          if (path) filesToInclude.push({ name: path, file: row.file });
-        }
-      });
-    });
-
     try {
-      await saveAsZip(
-        DEFAULT_FILENAME,
-        exportData,
-        filesToInclude,
-        "sessionData.json",
-      );
+      await saveAsJson(DEFAULT_FILENAME, exportData);
     } catch {
       alert("Error al exportar los datos.");
     }
@@ -138,15 +108,11 @@ export default function DueloCruzadoPage() {
 
   const handleLoad = useCallback(async (file: File) => {
     try {
-      const zip = await loadZipFile(file);
-      const dataFile = zip.file("sessionData.json") || zip.file("data.json");
-      if (!dataFile) {
-        alert("El archivo no es un paquete válido de Duelo Cruzado.");
+      const sessionData = await loadJsonFile<SessionData>(file);
+      if (!sessionData) {
+        alert("El archivo no es un paquete JSON válido de Reto Cruzado.");
         return;
       }
-
-      const content = await dataFile.async("string");
-      const sessionData = JSON.parse(content) as SessionData;
 
       if (sessionData.level0?.courses) {
         level0Ref.current?.setData(sessionData.level0.courses);
@@ -187,7 +153,7 @@ export default function DueloCruzadoPage() {
           title: g.title || "",
           rows: g.questions.map((q) => ({
             id: nanoid(),
-            pairs: Array.from({ length: 4 }, (_, idx) => ({
+            pairs: Array.from({ length: 3 }, (_, idx) => ({
               leftText: q.pairs?.[idx]?.leftText || "",
               rightText: q.pairs?.[idx]?.rightText || "",
             })),
@@ -207,46 +173,6 @@ export default function DueloCruzadoPage() {
         }));
         level4Ref.current?.setData(d4);
       }
-
-      if (sessionData.level5?.groups) {
-        const d5: Level5Column[] = await Promise.all(
-          sessionData.level5.groups.map(async (g) => {
-            const rows = await Promise.all(
-              g.questions.map(async (q) => {
-                let imageFile: File | undefined;
-                let imageUrl: string | undefined;
-
-                if (q.imagePath) {
-                  const imgEntry = zip.file(q.imagePath);
-                  if (imgEntry) {
-                    const blob = await imgEntry.async("blob");
-                    const parts = (
-                      q.imagePath.split("/").pop() || q.imagePath
-                    ).split("_");
-                    const originalName =
-                      parts.length > 1 ? parts.slice(1).join("_") : parts[0];
-                    imageFile = new File([blob], originalName, {
-                      type: blob.type || "image/png",
-                    });
-                    imageUrl = URL.createObjectURL(blob);
-                  }
-                }
-
-                return {
-                  id: nanoid(),
-                  file: imageFile,
-                  url: imageUrl,
-                };
-              }),
-            );
-            return {
-              title: g.title || "",
-              rows: rows.length > 0 ? rows : [{ id: nanoid() }],
-            };
-          }),
-        );
-        level5Ref.current?.setData(d5);
-      }
     } catch {
       alert("Error al importar los datos.");
     }
@@ -258,9 +184,9 @@ export default function DueloCruzadoPage() {
 
   useEffect(() => {
     setHeader({
-      title: "Duelo Cruzado",
-      icon: <Swords className="h-3 w-3" />,
-      format: "zip",
+      title: "Reto Cruzado",
+      icon: <Shuffle className="h-3 w-3" />,
+      format: "json",
       onSave: handleSave,
       onLoad: handleLoad,
     });
@@ -294,11 +220,6 @@ export default function DueloCruzadoPage() {
             name: "Nivel 4",
             icon: Layers,
             component: <Level4View ref={level4Ref} />,
-          },
-          {
-            name: "Nivel 5",
-            icon: Layers,
-            component: <Level5View ref={level5Ref} />,
           },
         ]}
       />

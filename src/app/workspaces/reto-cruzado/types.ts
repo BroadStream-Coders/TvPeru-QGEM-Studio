@@ -21,10 +21,6 @@ export interface QuestionLevel4 {
   answer: string;
 }
 
-export interface QuestionLevel5 {
-  imagePath: string;
-}
-
 export interface GroupLevel<T> {
   title: string;
   questions: T[];
@@ -36,5 +32,4 @@ export interface SessionData {
   level2: { groups: GroupLevel<QuestionLevel2>[] };
   level3: { groups: GroupLevel<QuestionLevel3>[] };
   level4: { groups: GroupLevel<QuestionLevel4>[] };
-  level5?: { groups: GroupLevel<QuestionLevel5>[] };
 }

@@ -11,7 +11,7 @@ import {
   Grid2x2,
   Sigma,
   HelpCircle,
-  Swords,
+  Shuffle,
 } from "lucide-react";
 
 const workspaces = [
@@ -52,10 +52,10 @@ const workspaces = [
     icon: ImageIcon,
   },
   {
-    name: "Duelo Cruzado",
+    name: "Reto Cruzado",
     description: "Evaluación y listas dinámicas",
-    href: "/workspaces/duelo-cruzado",
-    icon: Swords,
+    href: "/workspaces/reto-cruzado",
+    icon: Shuffle,
   },
   {
     name: "De par en par",
