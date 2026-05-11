@@ -1,6 +1,6 @@
 # TvPeru-QGEM-Studio
 
-**QGEM Studio** es el sistema web de recolección de datos para el programa de TV en vivo *Que Gane el Mejor* (TV Perú), desarrollado por BroadStream Coders.
+**QGEM Studio** es el sistema web de recolección de datos para el programa de TV en vivo _Que Gane el Mejor_ (TV Perú), desarrollado por BroadStream Coders.
 
 ## Propósito del Proyecto
 
@@ -23,16 +23,19 @@ El sistema permite a los especialistas de producción (usuarios con bajo perfil 
 ## Instalación y Ejecución
 
 1. Clona el repositorio:
+
    ```bash
    git clone <repo_url>
    ```
 
 2. Instala las dependencias:
+
    ```bash
    npm install
    ```
 
 3. Inicia el servidor de desarrollo:
+
    ```bash
    npm run dev
    ```
