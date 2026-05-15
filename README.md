@@ -31,13 +31,13 @@ El sistema permite a los especialistas de producción (usuarios con bajo perfil 
 2. Instala las dependencias:
 
    ```bash
-   npm install
+   pnpm install
    ```
 
 3. Inicia el servidor de desarrollo:
 
    ```bash
-   npm run dev
+   pnpm run dev
    ```
 
 4. Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver la aplicación.
