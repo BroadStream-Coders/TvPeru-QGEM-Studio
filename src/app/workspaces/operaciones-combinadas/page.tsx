@@ -88,15 +88,19 @@ export default function OperacionesCombinadasPage() {
       rounds: rounds.map((r) => ({
         boards: r.boards.map((b) => ({
           operations: b.operations
-            .filter((op) => op.sequence)
-            .map((op) => ({
-              sequence: {
-                values: op.sequence!.values,
-                position: op.sequence!.position,
-                direction: op.sequence!.direction,
-              },
-              hiddenIndexes: op.sequence!.hiddenIndexes || [],
-            })),
+            .reduce((acc, op) => {
+              if (op.sequence) {
+                acc.push({
+                  sequence: {
+                    values: op.sequence!.values,
+                    position: op.sequence!.position,
+                    direction: op.sequence!.direction,
+                  },
+                  hiddenIndexes: op.sequence!.hiddenIndexes || [],
+                });
+              }
+              return acc;
+            }, [] as ExportedOperation[]),
         })),
       })),
     };

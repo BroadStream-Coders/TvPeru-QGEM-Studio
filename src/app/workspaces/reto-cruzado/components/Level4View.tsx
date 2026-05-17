@@ -80,13 +80,16 @@ export const Level4View = forwardRef<Level4ViewRef>((_, ref) => {
   };
 
   const handleQuickLoad = (columnIndex: number, matrix: string[][]) => {
-    const newRows: Level4RowData[] = matrix
-      .filter((row) => row.length > 0 && row.some((cell) => cell.trim() !== ""))
-      .map((row) => ({
+    const newRows: Level4RowData[] = [];
+    for (const row of matrix) {
+      if (row.length === 0) continue;
+      if (!row.some(cell => cell.trim() !== "")) continue;
+      newRows.push({
         id: nanoid(),
         question: row[0] || "",
         answer: row[1] || "",
-      }));
+      });
+    }
 
     if (newRows.length > 0) {
       const next = [...columns];

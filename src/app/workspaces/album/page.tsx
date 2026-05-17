@@ -99,10 +99,14 @@ export default function AlbumPage() {
 
   const handleQuickLoad = (roundId: string, matrix: string[][]) => {
     // Each line = a question name, max 5 taken
-    const names = matrix
-      .map((row) => row[0]?.trim() ?? "")
-      .filter((line) => line !== "")
-      .slice(0, 5);
+    const names: string[] = [];
+    for (const row of matrix) {
+      const line = row[0]?.trim() ?? "";
+      if (line !== "") {
+        names.push(line);
+        if (names.length === 5) break;
+      }
+    }
 
     if (names.length === 0) return;
 

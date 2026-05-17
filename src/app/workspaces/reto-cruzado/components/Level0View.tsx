@@ -17,11 +17,17 @@ export const Level0View = forwardRef<Level0ViewRef>((props, ref) => {
   const courses = useMemo(() => groups[0] || [], [groups]);
 
   useImperativeHandle(ref, () => ({
-    getData: () =>
-      courses
-        .map((c) => c.trim())
-        .filter((c) => c !== "")
-        .slice(0, 20),
+    getData: () => {
+      const result: string[] = [];
+      for (const c of courses) {
+        const trimmed = c.trim();
+        if (trimmed !== "") {
+          result.push(trimmed);
+          if (result.length === 20) break;
+        }
+      }
+      return result;
+    },
     setData: (data) => setGroups([data.length > 0 ? data : [""]]),
   }));
 

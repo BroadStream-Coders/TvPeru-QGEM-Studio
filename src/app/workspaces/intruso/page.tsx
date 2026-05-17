@@ -148,10 +148,14 @@ export default function Page() {
   };
 
   const handleLevel1QuickLoad = (roundId: string, matrix: string[][]) => {
-    const lines = matrix
-      .map((row) => row[0]?.trim() ?? "")
-      .filter((line) => line !== "")
-      .slice(0, 4);
+    const lines: string[] = [];
+    for (const row of matrix) {
+      const line = row[0]?.trim() ?? "";
+      if (line !== "") {
+        lines.push(line);
+        if (lines.length === 4) break;
+      }
+    }
 
     if (lines.length === 0) return;
 
@@ -233,10 +237,14 @@ export default function Page() {
   };
 
   const handleLevel2QuickLoad = (roundId: string, matrix: string[][]) => {
-    const names = matrix
-      .map((row) => row[0]?.trim() ?? "")
-      .filter((line) => line !== "")
-      .slice(0, 4);
+    const names: string[] = [];
+    for (const row of matrix) {
+      const line = row[0]?.trim() ?? "";
+      if (line !== "") {
+        names.push(line);
+        if (names.length === 4) break;
+      }
+    }
 
     if (names.length === 0) return;
 
