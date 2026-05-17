@@ -385,7 +385,10 @@ export default function OperacionesCombinadasPage() {
         return;
       }
 
-      const lines = matrix.map((row) => row.join("\t").trim()).filter(Boolean);
+      const lines = matrix.flatMap(row => {
+        const line = row.join("\t").trim();
+        return line ? [line] : [];
+      });
       const toAdd = lines.slice(0, availableSlots).map((line) => ({
         id: nanoid(),
         text: line,
