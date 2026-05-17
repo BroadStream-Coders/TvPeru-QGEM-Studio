@@ -1,0 +1,112 @@
+import { useState } from "react";
+import { Dices } from "lucide-react";
+import { BoardSize } from "../types";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+interface BuscaLogoSidebarProps {
+  boardSize: BoardSize;
+  logoCount: number;
+  onSizeChange: (size: BoardSize) => void;
+  onRandomFill: (count: number) => void;
+}
+
+export function BuscaLogoSidebar({
+  boardSize,
+  logoCount,
+  onSizeChange,
+  onRandomFill,
+}: BuscaLogoSidebarProps) {
+  const [randomCount, setRandomCount] = useState<string>("5");
+
+  const handleRandomFill = () => {
+    const count = parseInt(randomCount, 10);
+    if (!isNaN(count) && count > 0) {
+      onRandomFill(count);
+    }
+  };
+
+  return (
+    <section className="w-full lg:w-[280px] shrink-0 flex flex-col border border-border rounded-xl bg-card overflow-hidden shadow-sm">
+      <div className="flex-none bg-muted px-4 py-3 border-b border-border h-12 flex items-center justify-between">
+        <h2 className="text-sm font-bold text-foreground">Configuración</h2>
+      </div>
+
+      <div className="flex-1 overflow-y-auto p-4 space-y-6">
+        <div className="space-y-3">
+          <label className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+            Logos marcados
+          </label>
+          <div className="w-full h-10 text-sm bg-background border border-border rounded-md flex items-center justify-between px-3 font-medium">
+            <span>Total de logos</span>
+            <span className="text-xs font-bold px-2 py-0.5 rounded bg-brand/10 text-brand">
+              {logoCount}
+            </span>
+          </div>
+        </div>
+
+        <div className="space-y-3 pt-4 border-t border-border">
+          <label className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+            Tamaño del tablero
+          </label>
+          <Select
+            value={boardSize}
+            onValueChange={(val) => onSizeChange(val as BoardSize)}
+          >
+            <SelectTrigger className="w-full h-10 text-sm bg-background">
+              <SelectValue placeholder="Selecciona un tamaño" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="4x3">4x3 (12 casillas)</SelectItem>
+              <SelectItem value="5x4">5x4 (20 casillas)</SelectItem>
+              <SelectItem value="6x5">6x5 (30 casillas)</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-3">
+          <label className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+            Llenado Aleatorio
+          </label>
+          <div className="flex gap-2">
+            <input
+              type="number"
+              min="1"
+              value={randomCount}
+              onChange={(e) => setRandomCount(e.target.value)}
+              className="w-16 h-10 flex-none rounded-md border border-border bg-background px-3 text-sm font-mono text-center focus:outline-none focus:ring-2 focus:ring-brand/50 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            />
+            <button
+              onClick={handleRandomFill}
+              className="flex-1 flex items-center justify-center gap-2 rounded-md bg-brand/10 hover:bg-brand/20 text-brand font-bold text-sm transition-colors"
+            >
+              <Dices className="h-4 w-4" />
+              Generar
+            </button>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Coloca logos de forma aleatoria en el tablero actual.
+          </p>
+        </div>
+      </div>
+
+      <div className="p-4 bg-muted/30 border-t border-border mt-auto">
+        <div className="text-sm text-muted-foreground flex flex-col gap-2 font-medium">
+          <div className="flex items-center gap-1.5">
+            <span>💡</span>
+            <span className="font-bold text-foreground">Tip:</span>
+          </div>
+          <span className="leading-snug">
+            Clic sobre una casilla del tablero principal para colocar o quitar
+            un logo manualmente.
+          </span>
+        </div>
+      </div>
+    </section>
+  );
+}

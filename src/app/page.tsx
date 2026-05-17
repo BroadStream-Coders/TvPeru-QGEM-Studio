@@ -81,6 +81,12 @@ const workspaces = [
     href: "/workspaces/galeria-fotos",
     icon: ImageIcon,
   },
+  {
+    name: "Busca Logo",
+    description: "Encuentra el logo escondido",
+    href: "/workspaces/busca-logo",
+    icon: Search,
+  },
 ];
 
 export default function Home() {
