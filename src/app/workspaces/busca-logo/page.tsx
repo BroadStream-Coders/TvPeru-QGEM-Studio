@@ -92,7 +92,7 @@ export default function BuscaLogoPage() {
   const handleAddBoard = () => {
     if (boards.length >= MAX_BOARDS) return;
     const newBoard = spawnBoard();
-    setBoards(prev => [...prev, newBoard]);
+    setBoards((prev) => [...prev, newBoard]);
     setSelectedBoardId(newBoard.id);
   };
 

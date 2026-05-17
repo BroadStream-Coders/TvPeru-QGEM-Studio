@@ -87,20 +87,19 @@ export default function OperacionesCombinadasPage() {
     const payload = {
       rounds: rounds.map((r) => ({
         boards: r.boards.map((b) => ({
-          operations: b.operations
-            .reduce((acc, op) => {
-              if (op.sequence) {
-                acc.push({
-                  sequence: {
-                    values: op.sequence!.values,
-                    position: op.sequence!.position,
-                    direction: op.sequence!.direction,
-                  },
-                  hiddenIndexes: op.sequence!.hiddenIndexes || [],
-                });
-              }
-              return acc;
-            }, [] as ExportedOperation[]),
+          operations: b.operations.reduce((acc, op) => {
+            if (op.sequence) {
+              acc.push({
+                sequence: {
+                  values: op.sequence!.values,
+                  position: op.sequence!.position,
+                  direction: op.sequence!.direction,
+                },
+                hiddenIndexes: op.sequence!.hiddenIndexes || [],
+              });
+            }
+            return acc;
+          }, [] as ExportedOperation[]),
         })),
       })),
     };
@@ -171,7 +170,7 @@ export default function OperacionesCombinadasPage() {
   const handleAddRound = () => {
     if (rounds.length >= MAX_ROUNDS) return;
     const newRound = spawnRound();
-    setRounds(prev => [...prev, newRound]);
+    setRounds((prev) => [...prev, newRound]);
     setSelectedRoundId(newRound.id);
     setSelectedBoardId(newRound.boards[0].id);
   };
@@ -385,7 +384,7 @@ export default function OperacionesCombinadasPage() {
         return;
       }
 
-      const lines = matrix.flatMap(row => {
+      const lines = matrix.flatMap((row) => {
         const line = row.join("\t").trim();
         return line ? [line] : [];
       });

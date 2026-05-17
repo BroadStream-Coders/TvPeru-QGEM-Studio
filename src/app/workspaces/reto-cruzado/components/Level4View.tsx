@@ -33,7 +33,7 @@ export const Level4View = forwardRef<Level4ViewRef>((_, ref) => {
   }));
 
   const addColumn = () => {
-    setColumns(prev => [...prev, { title: "", rows: [createEmptyRow()] }]);
+    setColumns((prev) => [...prev, { title: "", rows: [createEmptyRow()] }]);
   };
 
   const removeColumn = (index: number) => {
@@ -83,7 +83,7 @@ export const Level4View = forwardRef<Level4ViewRef>((_, ref) => {
     const newRows: Level4RowData[] = [];
     for (const row of matrix) {
       if (row.length === 0) continue;
-      if (!row.some(cell => cell.trim() !== "")) continue;
+      if (!row.some((cell) => cell.trim() !== "")) continue;
       newRows.push({
         id: nanoid(),
         question: row[0] || "",

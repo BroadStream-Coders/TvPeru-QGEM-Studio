@@ -12,14 +12,12 @@
 export function parseExcelPaste(text: string): string[][] {
   if (!text) return [];
 
-  return text
-    .split(/\r?\n/)
-    .reduce((acc, row) => {
-      if (row.length > 0) {
-        acc.push(row.split("\t").map(cell => cell.trim()));
-      }
-      return acc;
-    }, [] as string[][]);
+  return text.split(/\r?\n/).reduce((acc, row) => {
+    if (row.length > 0) {
+      acc.push(row.split("\t").map((cell) => cell.trim()));
+    }
+    return acc;
+  }, [] as string[][]);
 }
 
 /**

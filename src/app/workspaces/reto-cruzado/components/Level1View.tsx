@@ -62,18 +62,21 @@ export const Level1View = forwardRef<Level1ViewRef>((_, ref) => {
   );
 
   const addColumn = () => {
-    setColumns(prev => [...prev, {
-      title: "",
-      rows: [
-        {
-          id: nanoid(),
-          question: "",
-          answerL: "",
-          answerR: "",
-          correctAnswer: "L",
-        },
-      ],
-    }]);
+    setColumns((prev) => [
+      ...prev,
+      {
+        title: "",
+        rows: [
+          {
+            id: nanoid(),
+            question: "",
+            answerL: "",
+            answerR: "",
+            correctAnswer: "L",
+          },
+        ],
+      },
+    ]);
   };
 
   const removeColumn = (index: number) => {
