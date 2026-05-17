@@ -85,9 +85,13 @@ export const Level2View = forwardRef<Level2ViewRef>((_, ref) => {
 
   const handleQuickLoad = useCallback(
     (columnIndex: number, matrix: string[][]) => {
-      const rawLines = matrix
-        .map((row) => row[0]?.trim() ?? "")
-        .filter((line) => line !== "");
+      const rawLines: string[] = [];
+      for (const row of matrix) {
+        const line = row[0]?.trim() ?? "";
+        if (line !== "") {
+          rawLines.push(line);
+        }
+      }
 
       const newRows: Level2RowData[] = [];
 
