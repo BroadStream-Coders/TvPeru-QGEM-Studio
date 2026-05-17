@@ -167,7 +167,7 @@ export default function OperacionesCombinadasPage() {
   const handleAddRound = () => {
     if (rounds.length >= MAX_ROUNDS) return;
     const newRound = spawnRound();
-    setRounds([...rounds, newRound]);
+    setRounds(prev => [...prev, newRound]);
     setSelectedRoundId(newRound.id);
     setSelectedBoardId(newRound.boards[0].id);
   };

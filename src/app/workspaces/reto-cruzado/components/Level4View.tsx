@@ -33,7 +33,7 @@ export const Level4View = forwardRef<Level4ViewRef>((_, ref) => {
   }));
 
   const addColumn = () => {
-    setColumns([...columns, { title: "", rows: [createEmptyRow()] }]);
+    setColumns(prev => [...prev, { title: "", rows: [createEmptyRow()] }]);
   };
 
   const removeColumn = (index: number) => {

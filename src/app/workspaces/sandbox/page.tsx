@@ -24,12 +24,12 @@ function ColumnsDemo() {
   const [desc, setDesc] = useState("");
   const [rows, setRows] = useState(["Elemento 1", "Elemento 2", "Elemento 3"]);
 
-  const addColumn = () => setColumns([...columns, { id: nanoid() }]);
+  const addColumn = () => setColumns(prev => [...prev, { id: nanoid() }]);
   const removeColumn = (id: string) =>
     setColumns(columns.filter((c) => c.id !== id));
   const addRow = () => {
     if (rows.length >= MAX_CAPACITY) return;
-    setRows([...rows, ""]);
+    setRows(prev => [...prev, ""]);
   };
   const removeRow = (idx: number) => setRows(rows.filter((_, i) => i !== idx));
   const updateRow = (idx: number, val: string) =>
@@ -84,7 +84,7 @@ function ColumnsDemo() {
                 const newItems = matrix.map((row) => row[0] || "");
                 const available = MAX_CAPACITY - rows.length;
                 const toAdd = newItems.slice(0, available);
-                setRows([...rows, ...toAdd]);
+                setRows(prev => [...prev, ...toAdd]);
               }}
             />
           </GroupFooter>
