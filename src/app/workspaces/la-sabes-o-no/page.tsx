@@ -180,7 +180,7 @@ export default function LaSabesONoPage() {
   useEffect(() => {
     setHeader({
       title: "La Sabes o No",
-      icon: <HelpCircle className="h-3 w-3" />,
+      icon: <HelpCircle className="size-3" />,
       format: "json",
       onSave: handleSave,
       onLoad: handleLoad,
