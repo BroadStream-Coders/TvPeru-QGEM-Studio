@@ -69,7 +69,7 @@ export default function DeletreoPage() {
   useEffect(() => {
     setHeader({
       title: "Deletreo",
-      icon: <SpellCheck className="h-3 w-3" />,
+      icon: <SpellCheck className="size-3" />,
       format: "json",
       onSave: handleSave,
       onLoad: handleLoad,

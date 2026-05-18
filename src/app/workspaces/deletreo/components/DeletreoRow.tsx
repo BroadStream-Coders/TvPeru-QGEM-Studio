@@ -28,7 +28,7 @@ export function DeletreoRow({
 
   return (
     <div className="flex items-center gap-2 group">
-      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded text-2xs font-mono text-muted-foreground/50 select-none">
+      <div className="flex size-6 shrink-0 items-center justify-center rounded text-2xs font-mono text-muted-foreground/50 select-none">
         {index + 1}
       </div>
 
@@ -50,9 +50,9 @@ export function DeletreoRow({
         variant="ghost"
         size="icon"
         onClick={onRemove}
-        className="h-7 w-7 shrink-0 text-muted-foreground/40 hover:text-brand hover:bg-brand/10 opacity-0 group-hover:opacity-100 transition-opacity"
+        className="size-7 shrink-0 text-muted-foreground/40 hover:text-brand hover:bg-brand/10 opacity-0 group-hover:opacity-100 transition-opacity"
       >
-        <Trash2 className="h-3.5 w-3.5" />
+        <Trash2 className="size-3.5" />
       </Button>
     </div>
   );
