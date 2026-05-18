@@ -51,9 +51,9 @@ export function CalculoMentalBoard({
         variant="ghost"
         size="icon"
         onClick={onRemoveBoard}
-        className="absolute right-0 top-1/2 -translate-y-1/2 h-7 w-7 text-muted-foreground/30 hover:text-destructive hover:bg-destructive/10 opacity-0 group-hover:opacity-100 transition-opacity"
+        className="absolute right-0 top-1/2 -translate-y-1/2 size-7 text-muted-foreground/30 hover:text-destructive hover:bg-destructive/10 opacity-0 group-hover:opacity-100 transition-opacity"
       >
-        <Trash2 className="h-3.5 w-3.5" />
+        <Trash2 className="size-3.5" />
       </Button>
     </div>
   );

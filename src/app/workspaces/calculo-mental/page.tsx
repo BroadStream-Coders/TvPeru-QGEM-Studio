@@ -103,7 +103,7 @@ export default function CalculoMentalPage() {
   useEffect(() => {
     setHeader({
       title: "Cálculo Mental",
-      icon: <Calculator className="h-3 w-3" />,
+      icon: <Calculator className="size-3" />,
       format: "json",
       onSave: handleSave,
       onLoad: handleLoad,
