@@ -44,8 +44,7 @@ export default function BuscaLogoPage() {
     const payload = {
       boards: boards.map((b) => ({
         size: b.size,
-        // Use 1-indexed for the JSON export
-        logoPositions: b.logoPositions.map((i) => i + 1).sort((a, b) => a - b),
+        logoPositions: [...b.logoPositions].sort((a, b) => a - b),
       })),
     };
     saveAsJson(DEFAULT_FILENAME, payload);
@@ -64,7 +63,7 @@ export default function BuscaLogoPage() {
         const newBoards = data.boards.map((b) => ({
           id: nanoid(),
           size: (b.size as BoardData["size"]) || "5x4",
-          logoPositions: b.logoPositions.map((i) => i - 1),
+          logoPositions: b.logoPositions,
         }));
 
         if (newBoards.length > 0) {
