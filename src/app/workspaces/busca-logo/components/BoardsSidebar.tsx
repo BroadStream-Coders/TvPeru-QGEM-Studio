@@ -19,11 +19,10 @@ export function BoardsSidebar({
   return (
     <section className="w-full lg:w-[240px] shrink-0 flex flex-col border border-border rounded-xl bg-card overflow-hidden shadow-sm">
       <div className="flex-none bg-muted px-4 py-3 border-b border-border h-12 flex items-center justify-center">
-        <h2 className="text-sm font-bold text-foreground">Estructura</h2>
+        <h2 className="text-sm font-semibold text-foreground">Estructura</h2>
       </div>
 
       <div className="flex flex-1 overflow-hidden">
-        {/* Tableros */}
         <div className="w-full flex flex-col overflow-hidden bg-background">
           <div className="flex-none flex flex-col items-center bg-muted/50 p-2 border-b border-border text-center">
             <span className="text-2xs font-bold text-muted-foreground uppercase tracking-widest">
@@ -57,7 +56,7 @@ export function BoardsSidebar({
               disabled={boards.length >= maxBoards}
               className="w-full flex items-center justify-center gap-1.5 rounded-md bg-brand/10 hover:bg-brand/20 text-brand py-2 text-xs font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <Plus className="h-3 w-3" /> Añadir
+              <Plus className="size-3" /> Añadir
             </button>
           </div>
         </div>

@@ -34,14 +34,14 @@ export function BuscaLogoSidebar({
   return (
     <section className="w-full lg:w-[280px] shrink-0 flex flex-col border border-border rounded-xl bg-card overflow-hidden shadow-sm">
       <div className="flex-none bg-muted px-4 py-3 border-b border-border h-12 flex items-center justify-between">
-        <h2 className="text-sm font-bold text-foreground">Configuración</h2>
+        <h2 className="text-sm font-semibold text-foreground">Configuración</h2>
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 space-y-6">
         <div className="space-y-3">
-          <label className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+          <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
             Logos marcados
-          </label>
+          </p>
           <div className="w-full h-10 text-sm bg-background border border-border rounded-md flex items-center justify-between px-3 font-medium">
             <span>Total de logos</span>
             <span className="text-xs font-bold px-2 py-0.5 rounded bg-brand/10 text-brand">
@@ -51,9 +51,9 @@ export function BuscaLogoSidebar({
         </div>
 
         <div className="space-y-3 pt-4 border-t border-border">
-          <label className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+          <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
             Tamaño del tablero
-          </label>
+          </p>
           <Select
             value={boardSize}
             onValueChange={(val) => onSizeChange(val as BoardSize)}
@@ -70,11 +70,15 @@ export function BuscaLogoSidebar({
         </div>
 
         <div className="space-y-3">
-          <label className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+          <label
+            htmlFor="random-count"
+            className="text-xs font-bold text-muted-foreground uppercase tracking-widest"
+          >
             Llenado Aleatorio
           </label>
           <div className="flex gap-2">
             <input
+              id="random-count"
               type="number"
               min="1"
               value={randomCount}
@@ -85,7 +89,7 @@ export function BuscaLogoSidebar({
               onClick={handleRandomFill}
               className="flex-1 flex items-center justify-center gap-2 rounded-md bg-brand/10 hover:bg-brand/20 text-brand font-bold text-sm transition-colors"
             >
-              <Dices className="h-4 w-4" />
+              <Dices className="size-4" />
               Generar
             </button>
           </div>

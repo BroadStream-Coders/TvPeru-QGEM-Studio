@@ -41,15 +41,16 @@ export default function BuscaLogoPage() {
     currentBoardIndex !== -1 ? boards[currentBoardIndex] : boards[0];
 
   const handleSave = useCallback(() => {
-    const payload = {
-      boards: boards
-        .filter((b) => isValidBoardSize(b.size))
-        .map((b) => ({
+    const validBoards: ExportedBoard[] = [];
+    for (const b of boards) {
+      if (isValidBoardSize(b.size)) {
+        validBoards.push({
           size: b.size,
-          logoPositions: [...b.logoPositions].sort((a, b) => a - b),
-        })),
-    };
-    saveAsJson(DEFAULT_FILENAME, payload);
+          logoPositions: b.logoPositions.toSorted((a, b) => a - b),
+        });
+      }
+    }
+    saveAsJson(DEFAULT_FILENAME, { boards: validBoards });
   }, [boards]);
 
   const handleLoad = useCallback(async (file: File) => {
@@ -62,13 +63,16 @@ export default function BuscaLogoPage() {
       const data = await loadJsonFile<ExportedData>(file, isValid);
 
       if (data && data.boards) {
-        const newBoards = data.boards
-          .filter((b) => isValidBoardSize(b.size))
-          .map((b) => ({
-            id: nanoid(),
-            size: b.size as BoardData["size"],
-            logoPositions: b.logoPositions,
-          }));
+        const newBoards: BoardData[] = [];
+        for (const b of data.boards) {
+          if (isValidBoardSize(b.size)) {
+            newBoards.push({
+              id: nanoid(),
+              size: b.size,
+              logoPositions: b.logoPositions,
+            });
+          }
+        }
 
         if (newBoards.length > 0) {
           setBoards(newBoards);
@@ -83,7 +87,7 @@ export default function BuscaLogoPage() {
   useEffect(() => {
     setHeader({
       title: "Busca Logo",
-      icon: <Search className="h-3 w-3" />,
+      icon: <Search className="size-3" />,
       format: "json",
       onSave: handleSave,
       onLoad: handleLoad,
@@ -125,7 +129,6 @@ export default function BuscaLogoPage() {
     const newBoards = [...boards];
     const board = { ...newBoards[currentBoardIndex] };
 
-    // Si el tablero se achica, filtramos los índices que quedan fuera de los límites
     const [cols, rows] = size.split("x").map(Number);
     const maxIndex = cols * rows;
 
@@ -148,7 +151,6 @@ export default function BuscaLogoPage() {
     const actualCount = Math.min(count, maxIndex);
     const allIndexes = Array.from({ length: maxIndex }, (_, i) => i);
 
-    // Shuffle and pick
     for (let i = allIndexes.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [allIndexes[i], allIndexes[j]] = [allIndexes[j], allIndexes[i]];
