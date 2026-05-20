@@ -6,7 +6,7 @@ import { nanoid } from "nanoid";
 import { useWorkspaceHeader } from "@/hooks/use-workspace-header";
 import { saveAsJson, loadJsonFile } from "@/helpers/persistence";
 
-import { BoardData } from "./types";
+import { BoardData, isValidBoardSize } from "./types";
 import { BoardsSidebar } from "./components/BoardsSidebar";
 import { BuscaLogoGrid } from "./components/BuscaLogoGrid";
 import { BuscaLogoSidebar } from "./components/BuscaLogoSidebar";
@@ -42,10 +42,12 @@ export default function BuscaLogoPage() {
 
   const handleSave = useCallback(() => {
     const payload = {
-      boards: boards.map((b) => ({
-        size: b.size,
-        logoPositions: [...b.logoPositions].sort((a, b) => a - b),
-      })),
+      boards: boards
+        .filter((b) => isValidBoardSize(b.size))
+        .map((b) => ({
+          size: b.size,
+          logoPositions: [...b.logoPositions].sort((a, b) => a - b),
+        })),
     };
     saveAsJson(DEFAULT_FILENAME, payload);
   }, [boards]);
@@ -60,11 +62,13 @@ export default function BuscaLogoPage() {
       const data = await loadJsonFile<ExportedData>(file, isValid);
 
       if (data && data.boards) {
-        const newBoards = data.boards.map((b) => ({
-          id: nanoid(),
-          size: (b.size as BoardData["size"]) || "5x4",
-          logoPositions: b.logoPositions,
-        }));
+        const newBoards = data.boards
+          .filter((b) => isValidBoardSize(b.size))
+          .map((b) => ({
+            id: nanoid(),
+            size: b.size as BoardData["size"],
+            logoPositions: b.logoPositions,
+          }));
 
         if (newBoards.length > 0) {
           setBoards(newBoards);
@@ -168,11 +172,17 @@ export default function BuscaLogoPage() {
         onAddBoard={handleAddBoard}
       />
 
-      <BuscaLogoGrid
-        logoPositions={currentBoard.logoPositions}
-        boardSize={currentBoard.size}
-        onCellClick={handleCellClick}
-      />
+      {isValidBoardSize(currentBoard.size) ? (
+        <BuscaLogoGrid
+          logoPositions={currentBoard.logoPositions}
+          boardSize={currentBoard.size}
+          onCellClick={handleCellClick}
+        />
+      ) : (
+        <section className="flex-1 flex items-center justify-center text-muted-foreground text-sm">
+          Tamaño de tablero no válido
+        </section>
+      )}
 
       <BuscaLogoSidebar
         boardSize={currentBoard.size}
