@@ -95,8 +95,8 @@ export default function Home() {
       {/* Top bar */}
       <header className="flex h-12 items-center border-b border-border px-6 bg-background/80 backdrop-blur-md sticky top-0 z-20">
         <div className="flex items-center gap-3">
-          <div className="flex h-6 w-6 items-center justify-center rounded-md bg-muted text-muted-foreground">
-            <Trophy className="h-3.5 w-3.5" />
+          <div className="flex size-6 items-center justify-center rounded-md bg-muted text-muted-foreground">
+            <Trophy className="size-3.5" />
           </div>
           <span className="text-sm font-bold tracking-tight text-foreground/90">
             QGEM Studio
@@ -117,7 +117,7 @@ export default function Home() {
             <p className="text-caption font-mono font-medium text-muted-foreground uppercase tracking-header">
               Workspaces de datos
             </p>
-            <h1 className="text-4xl font-bold tracking-tight text-foreground">
+            <h1 className="text-4xl font-semibold tracking-tight text-foreground">
               Que Gane el Mejor
             </h1>
             <p className="text-sm text-muted-foreground">
@@ -133,8 +133,8 @@ export default function Home() {
                 href={workspace.href}
                 className="group relative flex items-center gap-4 rounded-xl border border-border bg-card p-4 transition-all hover:border-brand/40 hover:bg-card/80 active:scale-[0.98] hover:shadow-lg hover:shadow-brand/5"
               >
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground group-hover:bg-brand/10 group-hover:text-brand transition-colors">
-                  <workspace.icon className="h-5 w-5" />
+                <div className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground group-hover:bg-brand/10 group-hover:text-brand transition-colors">
+                  <workspace.icon className="size-5" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-bold text-foreground truncate">
@@ -145,7 +145,7 @@ export default function Home() {
                   </p>
                 </div>
                 <div className="text-muted-foreground/20 transition-all group-hover:text-brand/60 group-hover:translate-x-0.5 pr-1">
-                  <ArrowRight className="h-4 w-4" />
+                  <ArrowRight className="size-4" />
                 </div>
               </Link>
             ))}
@@ -155,11 +155,14 @@ export default function Home() {
 
       {/* Footer sticky to bottom */}
       <footer className="footer-home border-t border-border h-12 px-6 sm:px-8 flex items-center justify-between gap-4 bg-background/50 backdrop-blur-md">
-        <p className="text-caption text-muted-foreground font-mono">
-          BroadStream Coders © {new Date().getFullYear()} — TV PERÚ
+        <p
+          className="text-caption text-muted-foreground font-mono"
+          suppressHydrationWarning
+        >
+          BroadStream Coders © {new Date().getFullYear()}: TV PERÚ
         </p>
         <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-success/10 border border-success/20">
-          <div className="h-1.5 w-1.5 rounded-full bg-success animate-pulse shadow-[0_0_8px_rgba(var(--success-rgb),0.5)]" />
+          <div className="size-1.5 rounded-full bg-success animate-pulse shadow-[0_0_8px_rgba(var(--success-rgb),0.5)]" />
           <span className="text-3xs font-mono font-bold text-success uppercase tracking-widest">
             Sistema activo
           </span>

@@ -11,12 +11,15 @@ export default function WorkspaceLayout({
       <div className="flex flex-col flex-1 overflow-hidden">{children}</div>
 
       <footer className="flex h-9 shrink-0 items-center justify-between border-t border-border px-6 bg-background">
-        <span className="text-2xs text-muted-foreground font-mono">
-          BroadStream Coders © {new Date().getFullYear()} — TV PERÚ QGEM APP
+        <span
+          className="text-2xs text-muted-foreground font-mono"
+          suppressHydrationWarning
+        >
+          BroadStream Coders © {new Date().getFullYear()}: TV PERÚ QGEM APP
           CENTER
         </span>
         <div className="flex items-center gap-1.5">
-          <div className="h-1.5 w-1.5 rounded-full bg-success" />
+          <div className="size-1.5 rounded-full bg-success" />
           <span className="text-2xs text-muted-foreground font-mono uppercase tracking-wider">
             Workspace Active
           </span>
