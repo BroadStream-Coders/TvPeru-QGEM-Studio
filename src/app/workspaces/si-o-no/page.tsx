@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { HelpCircle } from "lucide-react";
+import { ToggleRight } from "lucide-react";
 import { saveAsJson, loadJsonFile } from "@/helpers/persistence";
 import { GroupsContainer } from "@/components/shared/group-column/layout/GroupsContainer";
 import { useWorkspaceHeader } from "@/hooks/use-workspace-header";
@@ -210,7 +210,7 @@ export default function SiONoPage() {
   useEffect(() => {
     setHeader({
       title: "Si o No",
-      icon: <HelpCircle className="size-3" />,
+      icon: <ToggleRight className="size-3" />,
       format: "json",
       onSave: handleSave,
       onLoad: handleLoad,

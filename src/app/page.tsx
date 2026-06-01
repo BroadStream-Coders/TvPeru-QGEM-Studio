@@ -12,6 +12,7 @@ import {
   Sigma,
   HelpCircle,
   Shuffle,
+  ToggleRight,
 } from "lucide-react";
 
 const workspaces = [
@@ -91,7 +92,7 @@ const workspaces = [
     name: "Si o No",
     description: "Preguntas de verdadero o falso",
     href: "/workspaces/si-o-no",
-    icon: HelpCircle,
+    icon: ToggleRight,
   },
 ];
 
