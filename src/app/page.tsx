@@ -41,12 +41,6 @@ const workspaces = [
     icon: VenetianMask,
   },
   {
-    name: "Detective Literario",
-    description: "Encuentra los errores ocultos",
-    href: "/workspaces/detective-literario",
-    icon: Search,
-  },
-  {
     name: "Album",
     description: "Colector de fotos en columnas",
     href: "/workspaces/album",
