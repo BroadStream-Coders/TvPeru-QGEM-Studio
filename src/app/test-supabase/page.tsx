@@ -44,7 +44,9 @@ export default function TestSupabasePage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background font-mono">
       <div className="space-y-2 text-center">
-        <p className={`text-2xl font-bold ${colors[status]}`}>{labels[status]}</p>
+        <p className={`text-2xl font-bold ${colors[status]}`}>
+          {labels[status]}
+        </p>
         <p className="text-sm text-muted-foreground">{detail}</p>
         <p className="text-xs text-muted-foreground/50">
           {process.env.NEXT_PUBLIC_SUPABASE_URL}

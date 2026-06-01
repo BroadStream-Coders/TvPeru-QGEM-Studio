@@ -5,11 +5,7 @@ import { HelpCircle } from "lucide-react";
 import { saveAsJson, loadJsonFile } from "@/helpers/persistence";
 import { GroupsContainer } from "@/components/shared/group-column/layout/GroupsContainer";
 import { useWorkspaceHeader } from "@/hooks/use-workspace-header";
-import {
-  ValidationIssue,
-  isBlank,
-  formatPath,
-} from "@/helpers/validation";
+import { ValidationIssue, isBlank, formatPath } from "@/helpers/validation";
 import { nanoid } from "nanoid";
 import { Column, ColumnData } from "./components/Column";
 import { RowData } from "./components/Row";
