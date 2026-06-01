@@ -131,9 +131,9 @@ export default function SiONoPage() {
   const handleSave = useCallback(() => {
     const data: SessionData = {
       groups: columns.map((col) => ({
-        title: col.title,
+        title: col.title.trim(),
         questions: col.rows.map((q) => ({
-          question: q.question,
+          question: q.question.trim(),
           answer:
             q.correctAnswer === "Si"
               ? true

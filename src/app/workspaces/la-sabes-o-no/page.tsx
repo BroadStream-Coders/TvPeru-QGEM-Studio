@@ -5,6 +5,7 @@ import { HelpCircle } from "lucide-react";
 import { saveAsJson, loadJsonFile } from "@/helpers/persistence";
 import { GroupsContainer } from "@/components/shared/group-column/layout/GroupsContainer";
 import { useWorkspaceHeader } from "@/hooks/use-workspace-header";
+import { ValidationIssue, isBlank, formatPath } from "@/helpers/validation";
 import { nanoid } from "nanoid";
 import { Column, ColumnData } from "./components/Column";
 import { RowData } from "./components/Row";
@@ -132,10 +133,10 @@ export default function LaSabesONoPage() {
   const handleSave = useCallback(() => {
     const data: SessionData = {
       groups: columns.map((col) => ({
-        title: col.title,
+        title: col.title.trim(),
         questions: col.rows.map((q) => ({
-          question: q.question,
-          options: [q.answerL, q.answerR],
+          question: q.question.trim(),
+          options: [q.answerL.trim(), q.answerR.trim()],
           correctIndex: q.correctAnswer === "L" ? 0 : 1,
         })),
       })),
@@ -171,6 +172,37 @@ export default function LaSabesONoPage() {
     }
   }, []);
 
+  // ── Validation ──
+
+  const validate = useCallback((): ValidationIssue[] => {
+    const issues: ValidationIssue[] = [];
+    columns.forEach((col, colIndex) => {
+      const groupLabel = col.title.trim() || `Grupo ${colIndex + 1}`;
+      col.rows.forEach((row, rowIndex) => {
+        const rowLabel = `Fila ${rowIndex + 1}`;
+        if (isBlank(row.question)) {
+          issues.push({
+            path: formatPath(groupLabel, rowLabel, "Enunciado"),
+            message: "Falta el enunciado.",
+          });
+        }
+        if (isBlank(row.answerL)) {
+          issues.push({
+            path: formatPath(groupLabel, rowLabel, "Respuesta izquierda"),
+            message: "Falta la respuesta izquierda.",
+          });
+        }
+        if (isBlank(row.answerR)) {
+          issues.push({
+            path: formatPath(groupLabel, rowLabel, "Respuesta derecha"),
+            message: "Falta la respuesta derecha.",
+          });
+        }
+      });
+    });
+    return issues;
+  }, [columns]);
+
   // ── Header ──
 
   useEffect(() => {
@@ -184,8 +216,9 @@ export default function LaSabesONoPage() {
       format: "json",
       onSave: handleSave,
       onLoad: handleLoad,
+      validate,
     });
-  }, [setHeader, handleSave, handleLoad]);
+  }, [setHeader, handleSave, handleLoad, validate]);
 
   // ── Render ──
 
