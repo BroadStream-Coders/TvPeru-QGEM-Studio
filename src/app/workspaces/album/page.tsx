@@ -5,6 +5,7 @@ import { Image as ImageIcon } from "lucide-react";
 import { saveAsZip, loadZipFile } from "@/helpers/persistence";
 import { GroupsContainer } from "@/components/shared/group-column/layout/GroupsContainer";
 import { useWorkspaceHeader } from "@/hooks/use-workspace-header";
+import { ValidationIssue, isBlank, formatPath } from "@/helpers/validation";
 import { nanoid } from "nanoid";
 import { ImageSlot } from "@/types";
 import { AlbumColumn } from "./components/AlbumColumn";
@@ -127,10 +128,10 @@ export default function AlbumPage() {
   const handleSave = useCallback(async () => {
     const prepareMetadata = (albumRounds: AlbumRound[]): AlbumExportRound[] =>
       albumRounds.map((round) => ({
-        title: round.context,
+        title: round.context.trim(),
         cards: round.photos.map((photo) => ({
           isCroma: photo.isCroma ? true : undefined,
-          question: photo.name || "",
+          question: (photo.name || "").trim(),
           imagePath: photo.file ? `images/${nanoid(4)}_${photo.file.name}` : "",
         })),
       }));
@@ -243,6 +244,29 @@ export default function AlbumPage() {
     }
   }, []);
 
+  const validate = useCallback((): ValidationIssue[] => {
+    const issues: ValidationIssue[] = [];
+    rounds.forEach((round, roundIndex) => {
+      const roundLabel = round.context.trim() || `Columna ${roundIndex + 1}`;
+      round.photos.forEach((photo, photoIndex) => {
+        const cardLabel = `Carta ${photoIndex + 1}`;
+        if (isBlank(photo.name)) {
+          issues.push({
+            path: formatPath(roundLabel, cardLabel, "Pregunta"),
+            message: "Falta la pregunta.",
+          });
+        }
+        if (!photo.file && !photo.url) {
+          issues.push({
+            path: formatPath(roundLabel, cardLabel, "Imagen"),
+            message: "Falta la imagen.",
+          });
+        }
+      });
+    });
+    return issues;
+  }, [rounds]);
+
   useEffect(() => {
     return () => resetHeader();
   }, [resetHeader]);
@@ -254,8 +278,9 @@ export default function AlbumPage() {
       format: "zip",
       onSave: handleSave,
       onLoad: handleLoad,
+      validate,
     });
-  }, [setHeader, handleSave, handleLoad]);
+  }, [setHeader, handleSave, handleLoad, validate]);
 
   return (
     <main className="flex-1 overflow-hidden">

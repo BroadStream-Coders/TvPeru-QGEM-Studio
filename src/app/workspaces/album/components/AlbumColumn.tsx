@@ -43,11 +43,12 @@ export function AlbumColumn({
       />
 
       <RowsContainer>
-        <div className="grid grid-cols-2 gap-3">
-          {photos.map((photo) => (
+        <div className="flex flex-col gap-2">
+          {photos.map((photo, photoIndex) => (
             <AlbumCard
               key={photo.id}
               id={photo.id}
+              index={photoIndex + 1}
               name={photo.name}
               imageUrl={photo.url}
               isCroma={photo.isCroma}

@@ -1,10 +1,10 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { ImagePicker } from "@/components/shared/ImagePicker";
 
 interface AlbumCardProps {
   id: string;
+  index: number;
   name?: string;
   imageUrl?: string;
   isCroma?: boolean;
@@ -14,6 +14,7 @@ interface AlbumCardProps {
 }
 
 export function AlbumCard({
+  index,
   name,
   imageUrl,
   isCroma,
@@ -22,41 +23,42 @@ export function AlbumCard({
   onToggleCroma,
 }: AlbumCardProps) {
   return (
-    <div className="group flex flex-col gap-2 rounded-xl border p-1.5 transition-all duration-200 border-border bg-card hover:border-brand/40 hover:shadow-xs">
-      <div className="relative w-full">
+    <div
+      className={`group grid w-full grid-cols-[2rem_minmax(0,1fr)_5rem] items-stretch gap-2 rounded-xl border p-2 transition-all duration-200 ${
+        isCroma
+          ? "border-brand bg-brand/10 ring-1 ring-brand shadow-xs"
+          : "border-border bg-card hover:border-brand/40 hover:shadow-xs"
+      }`}
+    >
+      <div className="flex flex-col gap-1.5">
+        <div className="flex h-8 w-full items-center justify-center rounded border border-border bg-muted/30 text-xs font-mono font-medium text-muted-foreground">
+          {index}
+        </div>
+        <button
+          onClick={onToggleCroma}
+          title="Marcar como Croma"
+          className={`flex w-full flex-1 items-center justify-center rounded border text-xs font-bold font-mono transition-colors ${
+            isCroma
+              ? "border-brand bg-brand text-brand-foreground"
+              : "border-border bg-muted/20 text-muted-foreground hover:bg-muted/50"
+          }`}
+        >
+          C
+        </button>
+      </div>
+
+      <textarea
+        value={name || ""}
+        onChange={(e) => onNameChange(e.target.value)}
+        placeholder="Pregunta..."
+        className="h-full min-w-0 w-full resize-none rounded-md border border-border bg-background px-2.5 py-1.5 text-xs text-foreground placeholder:text-muted-foreground/40 focus:outline-hidden focus:ring-1 focus:ring-brand/40 transition-all"
+      />
+
+      <div className="w-full">
         <ImagePicker
           value={imageUrl}
           onChange={onImageChange}
           placeholder="Foto"
-        />
-
-        <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between transition-all duration-300 pointer-events-auto">
-          <Button
-            size="sm"
-            variant={isCroma ? "default" : "outline"}
-            onClick={(e) => {
-              e.stopPropagation();
-              onToggleCroma();
-            }}
-            className={`h-6 px-2 text-3xs font-bold uppercase transition-all shadow-sm w-full ${
-              isCroma
-                ? "bg-brand text-brand-foreground hover:bg-destructive/80 hover:text-destructive-foreground border-transparent"
-                : "bg-background/95 text-muted-foreground hover:bg-brand/10 hover:text-brand border-border"
-            }`}
-          >
-            {isCroma ? "✨ Croma" : "Marcar Croma"}
-          </Button>
-        </div>
-      </div>
-
-      <div className="px-0.5 pb-0.5">
-        <input
-          type="text"
-          value={name || ""}
-          onChange={(e) => onNameChange(e.target.value)}
-          placeholder="Pregunta..."
-          className="w-full h-8 rounded-md border border-border bg-background px-2.5 py-1.5 text-xs text-foreground placeholder:text-muted-foreground/40 focus:outline-hidden focus:ring-1 focus:ring-brand/40 transition-all"
-          onClick={(e) => e.stopPropagation()}
         />
       </div>
     </div>
