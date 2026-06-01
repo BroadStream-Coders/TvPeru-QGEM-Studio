@@ -5,6 +5,11 @@ import { HelpCircle } from "lucide-react";
 import { saveAsJson, loadJsonFile } from "@/helpers/persistence";
 import { GroupsContainer } from "@/components/shared/group-column/layout/GroupsContainer";
 import { useWorkspaceHeader } from "@/hooks/use-workspace-header";
+import {
+  ValidationIssue,
+  isBlank,
+  formatPath,
+} from "@/helpers/validation";
 import { nanoid } from "nanoid";
 import { Column, ColumnData } from "./components/Column";
 import { RowData } from "./components/Row";
@@ -175,6 +180,31 @@ export default function SiONoPage() {
     }
   }, []);
 
+  // ── Validation ──
+
+  const validate = useCallback((): ValidationIssue[] => {
+    const issues: ValidationIssue[] = [];
+    columns.forEach((col, colIndex) => {
+      const groupLabel = col.title.trim() || `Grupo ${colIndex + 1}`;
+      col.rows.forEach((row, rowIndex) => {
+        const rowLabel = `Fila ${rowIndex + 1}`;
+        if (isBlank(row.question)) {
+          issues.push({
+            path: formatPath(groupLabel, rowLabel, "Enunciado"),
+            message: "Falta el enunciado.",
+          });
+        }
+        if (row.correctAnswer === null) {
+          issues.push({
+            path: formatPath(groupLabel, rowLabel, "Respuesta"),
+            message: "Selecciona Sí o No.",
+          });
+        }
+      });
+    });
+    return issues;
+  }, [columns]);
+
   // ── Header ──
 
   useEffect(() => {
@@ -188,8 +218,9 @@ export default function SiONoPage() {
       format: "json",
       onSave: handleSave,
       onLoad: handleLoad,
+      validate,
     });
-  }, [setHeader, handleSave, handleLoad]);
+  }, [setHeader, handleSave, handleLoad, validate]);
 
   // ── Render ──
 

@@ -7,7 +7,8 @@ import { FileActions } from "./FileActions";
 import { useWorkspaceHeader } from "@/hooks/use-workspace-header";
 
 export function WorkspaceHeader() {
-  const { title, icon, format, onSave, onLoad } = useWorkspaceHeader();
+  const { title, icon, format, onSave, onLoad, validate } =
+    useWorkspaceHeader();
 
   if (!title) return null;
 
@@ -36,7 +37,12 @@ export function WorkspaceHeader() {
 
       <div className="flex items-center gap-2">
         {onSave && onLoad && format && (
-          <FileActions format={format} onSave={onSave} onLoad={onLoad} />
+          <FileActions
+            format={format}
+            onSave={onSave}
+            onLoad={onLoad}
+            validate={validate}
+          />
         )}
       </div>
     </header>

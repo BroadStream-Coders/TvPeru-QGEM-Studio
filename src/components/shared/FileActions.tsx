@@ -1,13 +1,16 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Download, Upload } from "lucide-react";
+import { ValidationDialog } from "./ValidationDialog";
+import { ValidationIssue } from "@/helpers/validation";
 
 interface FileActionsProps {
   format: "json" | "zip";
   onSave: () => void;
   onLoad: (file: File) => void;
+  validate?: () => ValidationIssue[];
   saveLabel?: string;
   loadLabel?: string;
 }
@@ -16,16 +19,27 @@ export function FileActions({
   format,
   onSave,
   onLoad,
+  validate,
   saveLabel = "Guardar",
   loadLabel = "Cargar",
 }: FileActionsProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [issues, setIssues] = useState<ValidationIssue[]>([]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     onLoad(file);
     e.target.value = "";
+  };
+
+  const handleSave = () => {
+    const found = validate?.() ?? [];
+    if (found.length > 0) {
+      setIssues(found);
+      return;
+    }
+    onSave();
   };
 
   return (
@@ -42,7 +56,7 @@ export function FileActions({
 
       <Button
         size="sm"
-        onClick={onSave}
+        onClick={handleSave}
         className="h-7 gap-1.5 bg-brand hover:brightness-110 active:scale-[0.98] text-brand-foreground text-xs shadow-sm transition-all font-bold uppercase"
       >
         <Download className="h-3.5 w-3.5" />
@@ -55,6 +69,12 @@ export function FileActions({
         accept={format === "json" ? ".json" : ".zip"}
         onChange={handleFileChange}
         className="hidden"
+      />
+
+      <ValidationDialog
+        open={issues.length > 0}
+        onClose={() => setIssues([])}
+        issues={issues}
       />
     </>
   );
