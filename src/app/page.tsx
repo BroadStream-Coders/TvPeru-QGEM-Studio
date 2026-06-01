@@ -87,6 +87,12 @@ const workspaces = [
     href: "/workspaces/busca-logo",
     icon: Search,
   },
+  {
+    name: "Si o No",
+    description: "Preguntas de verdadero o falso",
+    href: "/workspaces/si-o-no",
+    icon: HelpCircle,
+  },
 ];
 
 export default function Home() {
