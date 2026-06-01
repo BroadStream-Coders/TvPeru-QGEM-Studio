@@ -218,6 +218,7 @@ export default function AlbumPage() {
                   name: pMeta.question || "",
                   file: imageFile,
                   url: imageUrl,
+                  isCroma: pMeta.isCroma ?? false,
                 };
               }),
             );
