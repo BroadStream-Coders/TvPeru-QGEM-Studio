@@ -7,6 +7,7 @@ import { saveAsJson, loadJsonFile } from "@/helpers/persistence";
 import { GroupsContainer } from "@/components/shared/group-column/layout/GroupsContainer";
 import { useWorkspaceHeader } from "@/hooks/use-workspace-header";
 import { useWorkspaceGroups } from "@/hooks/use-workspace-groups";
+import { ValidationIssue, isBlank, formatPath } from "@/helpers/validation";
 import { CalculoMentalColumn } from "./components/CalculoMentalColumn";
 
 const DEFAULT_FILENAME = "CalculoMental.json";
@@ -68,9 +69,42 @@ export default function CalculoMentalPage() {
 
   const handleSave = useCallback(() => {
     const data: CalculoMentalData = {
-      groups: groups.map((boards) => ({ boards })),
+      groups: groups.map((boards) => ({
+        boards: boards.map((board) => ({
+          slots: board.slots.map((slot) => ({
+            question: slot.question.trim(),
+            answer: slot.answer.trim(),
+          })),
+        })),
+      })),
     };
     saveAsJson(DEFAULT_FILENAME, data);
+  }, [groups]);
+
+  const validate = useCallback((): ValidationIssue[] => {
+    const issues: ValidationIssue[] = [];
+    groups.forEach((boards, groupIndex) => {
+      const groupLabel = `Grupo ${groupIndex + 1}`;
+      boards.forEach((board, boardIndex) => {
+        const boardLabel = `Tablero ${boardIndex + 1}`;
+        board.slots.forEach((slot, slotIndex) => {
+          const slotLabel = `Casilla ${slotIndex + 1}`;
+          if (isBlank(slot.question)) {
+            issues.push({
+              path: formatPath(groupLabel, boardLabel, slotLabel, "Enunciado"),
+              message: "Falta el enunciado.",
+            });
+          }
+          if (isBlank(slot.answer)) {
+            issues.push({
+              path: formatPath(groupLabel, boardLabel, slotLabel, "Respuesta"),
+              message: "Falta la respuesta.",
+            });
+          }
+        });
+      });
+    });
+    return issues;
   }, [groups]);
 
   const handleLoad = useCallback(
@@ -107,8 +141,9 @@ export default function CalculoMentalPage() {
       format: "json",
       onSave: handleSave,
       onLoad: handleLoad,
+      validate,
     });
-  }, [setHeader, handleSave, handleLoad]);
+  }, [setHeader, handleSave, handleLoad, validate]);
 
   return (
     <main className="flex-1 overflow-hidden">
