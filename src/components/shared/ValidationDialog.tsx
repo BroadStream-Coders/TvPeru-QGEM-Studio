@@ -15,12 +15,14 @@ import { ValidationIssue } from "@/helpers/validation";
 interface ValidationDialogProps {
   open: boolean;
   onClose: () => void;
+  onForceSave: () => void;
   issues: ValidationIssue[];
 }
 
 export function ValidationDialog({
   open,
   onClose,
+  onForceSave,
   issues,
 }: ValidationDialogProps) {
   return (
@@ -53,6 +55,9 @@ export function ValidationDialog({
         </ul>
 
         <DialogFooter>
+          <Button variant="outline" onClick={onForceSave}>
+            Guardar de todos modos
+          </Button>
           <Button onClick={onClose}>Entendido</Button>
         </DialogFooter>
       </DialogContent>

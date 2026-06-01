@@ -42,6 +42,11 @@ export function FileActions({
     onSave();
   };
 
+  const handleForceSave = () => {
+    setIssues([]);
+    onSave();
+  };
+
   return (
     <>
       <Button
@@ -74,6 +79,7 @@ export function FileActions({
       <ValidationDialog
         open={issues.length > 0}
         onClose={() => setIssues([])}
+        onForceSave={handleForceSave}
         issues={issues}
       />
     </>
