@@ -29,12 +29,12 @@ es compartida.
 
 ### Estado por colector
 
-| Colector             | Estado                                                                   |
-| -------------------- | ------------------------------------------------------------------------ |
-| **Intruso**          | ✅ Implementado (Nivel 1: 21:9, Nivel 2: 3:4)                            |
-| **Album**            | ⬜ Sin crop — se probó 3:4 y se descartó ("queda mal"); usa imagen libre |
+| Colector             | Estado                                                                                              |
+| -------------------- | --------------------------------------------------------------------------------------------------- |
+| **Intruso**          | ✅ Implementado (Nivel 1: 21:9, Nivel 2: 3:4)                                                       |
+| **Album**            | ⬜ Sin crop — se probó 3:4 y se descartó ("queda mal"); usa imagen libre                            |
 | **Galería de Fotos** | 🚫 Sin crop por decisión — se podría aplicar, pero no se quiere recorte aquí (las fotos van libres) |
-| **De par en par**    | ⬜ Falta — maneja imágenes en las cartas; posible candidato              |
+| **De par en par**    | ⬜ Falta — maneja imágenes en las cartas; posible candidato                                         |
 
 **No aplica** (no manejan imágenes): Mi Libro Favorito, Deletreo, Cálculo Mental,
 Reto Cruzado, Operaciones Combinadas, La Sabes o No, Si o No, Busca Logo.
@@ -63,20 +63,20 @@ modos"** para forzar el guardado. Es **opt-in**: el colector solo necesita pasar
 
 ### Estado por colector
 
-| Colector                   | Estado                                              |
-| -------------------------- | --------------------------------------------------- |
-| **Si o No**                | ✅ Implementado (enunciado + selección Sí/No)       |
-| **La Sabes o No**          | ✅ Implementado (enunciado + 2 respuestas)          |
-| **Cálculo Mental**         | ✅ Implementado (enunciado + respuesta por casilla) |
-| **Album**                  | ✅ Implementado (pregunta + imagen por carta)       |
-| **Mi Libro Favorito**      | ✅ Implementado (nombre de jugador + enunciado + respuesta) |
-| **Deletreo**               | ✅ Implementado (palabra por casilla)               |
-| **Reto Cruzado**           | 🚫 Sin validación por decisión — se podría, pero no se quiere aquí |
-| **Operaciones Combinadas** | ✅ Implementado (operación vacía / sin colocar + tablero sin operaciones) |
-| **Galería de Fotos**       | ✅ Implementado (imagen por foto)                   |
-| **Intruso**                | ✅ Implementado (solo Nivel 1: imagen + opciones + intruso marcado) |
+| Colector                   | Estado                                                                       |
+| -------------------------- | ---------------------------------------------------------------------------- |
+| **Si o No**                | ✅ Implementado (enunciado + selección Sí/No)                                |
+| **La Sabes o No**          | ✅ Implementado (enunciado + 2 respuestas)                                   |
+| **Cálculo Mental**         | ✅ Implementado (enunciado + respuesta por casilla)                          |
+| **Album**                  | ✅ Implementado (pregunta + imagen por carta)                                |
+| **Mi Libro Favorito**      | ✅ Implementado (nombre de jugador + enunciado + respuesta)                  |
+| **Deletreo**               | ✅ Implementado (palabra por casilla)                                        |
+| **Reto Cruzado**           | 🚫 Sin validación por decisión — se podría, pero no se quiere aquí           |
+| **Operaciones Combinadas** | ✅ Implementado (operación vacía / sin colocar + tablero sin operaciones)    |
+| **Galería de Fotos**       | ✅ Implementado (imagen por foto)                                            |
+| **Intruso**                | ✅ Implementado (solo Nivel 1: imagen + opciones + intruso marcado)          |
 | **De par en par**          | ✅ Implementado (cada carta con el contenido de su modo: texto/imagen/ambos) |
-| **Busca Logo**             | ✅ Implementado (cada tablero con al menos un logo marcado) |
+| **Busca Logo**             | ✅ Implementado (cada tablero con al menos un logo marcado)                  |
 
 ---
 
