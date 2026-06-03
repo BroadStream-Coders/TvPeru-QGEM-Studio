@@ -5,6 +5,7 @@ import { Grid2x2, Layers } from "lucide-react";
 import { useWorkspaceHeader } from "@/hooks/use-workspace-header";
 import { LevelTabs } from "@/components/shared/LevelTabs";
 import { saveAsZip, loadZipFile } from "@/helpers/persistence";
+import { ValidationIssue, isBlank, formatPath } from "@/helpers/validation";
 
 import { Tab1View } from "./components/Tab1View";
 import { Tab2View } from "./components/Tab2View";
@@ -87,6 +88,43 @@ export default function DeParEnParPage() {
       alert("Error al exportar los datos.");
     }
   }, [numPairs, pairsData, boardOrder]);
+
+  const validate = useCallback((): ValidationIssue[] => {
+    const issues: ValidationIssue[] = [];
+
+    const checkCard = (
+      card: CardContent | undefined,
+      pairLabel: string,
+      side: "A" | "B",
+    ) => {
+      const cardLabel = formatPath(pairLabel, `Carta ${side}`);
+      const mode = card?.mode ?? "image";
+      const needsText = mode === "text" || mode === "both";
+      const needsImage = mode === "image" || mode === "both";
+
+      if (needsText && isBlank(card?.text)) {
+        issues.push({
+          path: formatPath(cardLabel, "Texto"),
+          message: "Falta el texto.",
+        });
+      }
+      if (needsImage && !card?.imageFile) {
+        issues.push({
+          path: formatPath(cardLabel, "Imagen"),
+          message: "Falta la imagen.",
+        });
+      }
+    };
+
+    for (let i = 0; i < numPairs; i++) {
+      const pair = pairsData[i + 1];
+      const pairLabel = `Par ${i + 1}`;
+      checkCard(pair?.cartaA, pairLabel, "A");
+      checkCard(pair?.cartaB, pairLabel, "B");
+    }
+
+    return issues;
+  }, [numPairs, pairsData]);
 
   const handleLoad = useCallback(async (file: File) => {
     try {
@@ -178,8 +216,9 @@ export default function DeParEnParPage() {
       format: "zip",
       onSave: handleSave,
       onLoad: handleLoad,
+      validate,
     });
-  }, [setHeader, handleSave, handleLoad]);
+  }, [setHeader, handleSave, handleLoad, validate]);
 
   return (
     <main className="flex-1 overflow-hidden">

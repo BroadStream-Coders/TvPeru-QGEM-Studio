@@ -33,7 +33,7 @@ es compartida.
 | -------------------- | ------------------------------------------------------------------------ |
 | **Intruso**          | ✅ Implementado (Nivel 1: 21:9, Nivel 2: 3:4)                            |
 | **Album**            | ⬜ Sin crop — se probó 3:4 y se descartó ("queda mal"); usa imagen libre |
-| **Galería de Fotos** | ⬜ Falta — candidato si se quiere uniformar el formato de las fotos      |
+| **Galería de Fotos** | 🚫 Sin crop por decisión — se podría aplicar, pero no se quiere recorte aquí (las fotos van libres) |
 | **De par en par**    | ⬜ Falta — maneja imágenes en las cartas; posible candidato              |
 
 **No aplica** (no manejan imágenes): Mi Libro Favorito, Deletreo, Cálculo Mental,
@@ -71,11 +71,11 @@ modos"** para forzar el guardado. Es **opt-in**: el colector solo necesita pasar
 | **Album**                  | ✅ Implementado (pregunta + imagen por carta)       |
 | **Mi Libro Favorito**      | ✅ Implementado (nombre de jugador + enunciado + respuesta) |
 | **Deletreo**               | ✅ Implementado (palabra por casilla)               |
-| **Reto Cruzado**           | ⬜ Falta                                            |
+| **Reto Cruzado**           | 🚫 Sin validación por decisión — se podría, pero no se quiere aquí |
 | **Operaciones Combinadas** | ✅ Implementado (operación vacía / sin colocar + tablero sin operaciones) |
 | **Galería de Fotos**       | ✅ Implementado (imagen por foto)                   |
 | **Intruso**                | ✅ Implementado (solo Nivel 1: imagen + opciones + intruso marcado) |
-| **De par en par**          | ⬜ Falta (validar que cada carta tenga contenido)   |
+| **De par en par**          | ✅ Implementado (cada carta con el contenido de su modo: texto/imagen/ambos) |
 | **Busca Logo**             | ✅ Implementado (cada tablero con al menos un logo marcado) |
 
 ---
@@ -132,12 +132,13 @@ De par en par, Busca Logo.
 | Cálculo Mental         |  —   |     ✅     |  ✅  |
 | Intruso                |  ✅  |     ✅     |  ✅  |
 | Album                  |  ⬜  |     ✅     |  ✅  |
-| Reto Cruzado           |  —   |     ⬜     |  ✅  |
-| De par en par          |  ⬜  |     ⬜     |  —   |
+| Reto Cruzado           |  —   |     🚫     |  ✅  |
+| De par en par          |  ⬜  |     ✅     |  —   |
 | Operaciones Combinadas |  —   |     ✅     |  ✅  |
 | La Sabes o No          |  —   |     ✅     |  ✅  |
-| Galería de Fotos       |  ⬜  |     ✅     |  ✅  |
+| Galería de Fotos       |  🚫  |     ✅     |  ✅  |
 | Busca Logo             |  —   |     ✅     |  —   |
 | Si o No                |  —   |     ✅     |  ✅  |
 
-Leyenda: ✅ implementado · ⬜ falta (aplicable) · — no aplica por diseño.
+Leyenda: ✅ implementado · ⬜ falta (aplicable) · 🚫 no se usa por decisión
+(aplicable, pero no se quiere) · — no aplica por diseño (estructural).
