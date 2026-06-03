@@ -73,7 +73,7 @@ modos"** para forzar el guardado. Es **opt-in**: el colector solo necesita pasar
 | **Deletreo**               | ✅ Implementado (palabra por casilla)               |
 | **Reto Cruzado**           | ⬜ Falta                                            |
 | **Operaciones Combinadas** | ✅ Implementado (operación vacía / sin colocar + tablero sin operaciones) |
-| **Galería de Fotos**       | ⬜ Falta (validar presencia de imagen)              |
+| **Galería de Fotos**       | ✅ Implementado (imagen por foto)                   |
 | **Intruso**                | ⬜ Falta (validar imágenes + que exista un intruso) |
 | **De par en par**          | ⬜ Falta (validar que cada carta tenga contenido)   |
 | **Busca Logo**             | ✅ Implementado (cada tablero con al menos un logo marcado) |
@@ -136,7 +136,7 @@ De par en par, Busca Logo.
 | De par en par          |  ⬜  |     ⬜     |  —   |
 | Operaciones Combinadas |  —   |     ✅     |  ✅  |
 | La Sabes o No          |  —   |     ✅     |  ✅  |
-| Galería de Fotos       |  ⬜  |     ⬜     |  ✅  |
+| Galería de Fotos       |  ⬜  |     ✅     |  ✅  |
 | Busca Logo             |  —   |     ✅     |  —   |
 | Si o No                |  —   |     ✅     |  ✅  |
 

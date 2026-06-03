@@ -31,7 +31,7 @@ Note: There is no test script configured; testing is done manually.
   - `src/app/layout.tsx`: Root layout
   - `src/app/globals.css`: Global styles
   - `src/app/page.tsx`: Home page (likely workspace selector)
-- `src/components/shared`: Reusable components across workspaces (e.g., `WorkspaceShell`, `FileActions`, `ImagePicker`, `WorkspaceHeader`)
+- `src/components/shared`: Reusable components across workspaces (e.g., `FileActions`, `ImagePicker`, `WorkspaceHeader`)
 - `src/hooks`: Custom React hooks (e.g., `use-image-picker`, `use-workspace-groups`, `use-workspace-header`)
 - `src/helpers`: Utility functions for data processing, persistence, validation, etc.
 - `src/lib`: Utility libraries (e.g., image cropping, general utils)
@@ -50,7 +50,7 @@ Note: There is no test script configured; testing is done manually.
 
 ### Common Tasks
 
-- Adding a new workspace: Create a folder under `src/app/workspaces/[name]`, add a `page.tsx` that uses `WorkspaceShell` and `FileActions`, and implement workspace-specific components in a `components` subfolder.
+- Adding a new workspace: Create a folder under `src/app/workspaces/[name]`, add a `page.tsx` that registers the header via `useWorkspaceHeader().setHeader({ title, icon, format, onSave, onLoad, validate })` inside a `useEffect` (and `resetHeader()` on unmount), and implement workspace-specific components in a `components` subfolder. The shared `WorkspaceHeader` in `layout.tsx` renders the header + `FileActions` from that store.
 - Adding a shared component: Place in `src/components/shared` and ensure it's generic and reusable.
 - Modifying validation: Refer to Roadmap.md for planned validation engine; currently validation is ad-hoc.
 

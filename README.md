@@ -47,7 +47,7 @@ El sistema permite a los especialistas de producción (usuarios con bajo perfil 
 El código está estructurado para maximizar la reutilización de componentes entre los distintos colectores (workspaces):
 
 - `src/app/workspaces/[nombre]`: Contiene la lógica de estado y los schemas de datos específicos de cada juego.
-- `src/components/shared`: Componentes UI estructurales reutilizados en todos los colectores (ej. `WorkspaceShell`, `FileActions`, `BoardColumn`).
+- `src/components/shared`: Componentes UI estructurales reutilizados en todos los colectores (ej. `WorkspaceHeader`, `FileActions`, `BoardColumn`).
 - `src/hooks`: Hooks de estado global o reutilizable (ej. `use-workspace-groups`, `use-image-picker`).
 - `src/helpers`: Funciones utilitarias para la persistencia, exportación y validación de los datos.
 

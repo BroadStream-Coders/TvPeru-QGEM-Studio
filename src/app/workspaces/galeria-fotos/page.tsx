@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Images } from "lucide-react";
 import { saveAsZip, loadZipFile } from "@/helpers/persistence";
-import { WorkspaceShell } from "@/components/shared/WorkspaceShell";
-import { FileActions } from "@/components/shared/FileActions";
 import { GroupsContainer } from "@/components/shared/group-column/layout/GroupsContainer";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { useWorkspaceHeader } from "@/hooks/use-workspace-header";
 import { useWorkspaceGroups } from "@/hooks/use-workspace-groups";
+import { ValidationIssue, formatPath } from "@/helpers/validation";
 import { Column } from "./components/Column";
 import { RowData } from "./components/Row";
 import { nanoid } from "nanoid";
@@ -27,6 +27,9 @@ const createEmptyRow = (): RowData => ({ id: nanoid() });
 
 export default function GaleriaFotosPage() {
   const [titles, setTitles] = useState<string[]>([""]);
+
+  const setHeader = useWorkspaceHeader((s) => s.setHeader);
+  const resetHeader = useWorkspaceHeader((s) => s.resetHeader);
 
   const {
     groups,
@@ -72,6 +75,22 @@ export default function GaleriaFotosPage() {
     const sessionData: ExportData = { groups: exportGroups };
     await saveAsZip(DEFAULT_FILENAME, sessionData, filesToInclude);
   }, [groups, titles]);
+
+  const validate = useCallback((): ValidationIssue[] => {
+    const issues: ValidationIssue[] = [];
+    groups.forEach((items, groupIndex) => {
+      const groupLabel = `Grupo ${groupIndex + 1}`;
+      items.forEach((item, itemIndex) => {
+        if (!item.file) {
+          issues.push({
+            path: formatPath(groupLabel, `Foto ${itemIndex + 1}`),
+            message: "Falta la imagen.",
+          });
+        }
+      });
+    });
+    return issues;
+  }, [groups]);
 
   const handleLoad = useCallback(
     async (file: File) => {
@@ -122,15 +141,23 @@ export default function GaleriaFotosPage() {
     [setTitles, setGroups],
   );
 
+  useEffect(() => {
+    return () => resetHeader();
+  }, [resetHeader]);
+
+  useEffect(() => {
+    setHeader({
+      title: "Galería de Fotos",
+      icon: <Images className="h-3 w-3" />,
+      format: "zip",
+      onSave: handleSave,
+      onLoad: handleLoad,
+      validate,
+    });
+  }, [setHeader, handleSave, handleLoad, validate]);
+
   return (
-    <WorkspaceShell
-      title="Galería de Fotos"
-      icon={<Images className="h-4 w-4" />}
-      badge={`${groups.length} grupo${groups.length !== 1 ? "s" : ""}`}
-      actions={
-        <FileActions format="zip" onSave={handleSave} onLoad={handleLoad} />
-      }
-    >
+    <main className="flex-1 overflow-hidden">
       <ScrollArea className="w-full h-full">
         <div
           className="flex min-w-max"
@@ -159,6 +186,6 @@ export default function GaleriaFotosPage() {
         </div>
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
-    </WorkspaceShell>
+    </main>
   );
 }

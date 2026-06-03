@@ -34,7 +34,8 @@ Registro de atajos, decisiones pendientes y riesgos a futuro de este proyecto.
 - **Riesgo:** 4/10
 - **Problema:** Galería de Fotos monta su cabecera con `WorkspaceShell` + `FileActions` directos, mientras todos los demás colectores usan el patrón store (`useWorkspaceHeader.setHeader`) que pinta `WorkspaceHeader`. Conviven dos formas de hacer lo mismo.
 - **Impacto futuro:** Cualquier mejora transversal al header (como el gate de validación, que vive en `FileActions` vía store) hay que implementarla dos veces o se olvida en Galería. Inconsistencia que multiplica el mantenimiento.
-- **Fecha:** 2026-06-01 · **Estado:** Abierto
+- **Fecha:** 2026-06-01 · **Estado:** Resuelto (2026-06-03)
+- **Resolución:** Galería migrada al patrón store (`setHeader` con `validate`); `WorkspaceShell.tsx` eliminado por quedar sin uso. Se descartó portar el badge "N grupos". Único patrón de header en todo el proyecto.
 
 ## [TD-004] Alto fijo del recortador de imágenes
 
