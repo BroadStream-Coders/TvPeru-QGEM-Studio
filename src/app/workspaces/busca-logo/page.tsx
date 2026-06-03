@@ -5,6 +5,7 @@ import { Search } from "lucide-react";
 import { nanoid } from "nanoid";
 import { useWorkspaceHeader } from "@/hooks/use-workspace-header";
 import { saveAsJson, loadJsonFile } from "@/helpers/persistence";
+import { ValidationIssue, formatPath } from "@/helpers/validation";
 
 import { BoardData, isValidBoardSize } from "./types";
 import { BoardsSidebar } from "./components/BoardsSidebar";
@@ -53,6 +54,19 @@ export default function BuscaLogoPage() {
     saveAsJson(DEFAULT_FILENAME, { boards: validBoards });
   }, [boards]);
 
+  const validate = useCallback((): ValidationIssue[] => {
+    const issues: ValidationIssue[] = [];
+    boards.forEach((board, boardIndex) => {
+      if (board.logoPositions.length === 0) {
+        issues.push({
+          path: formatPath(`Tablero ${boardIndex + 1}`),
+          message: "El tablero no tiene ningún logo marcado.",
+        });
+      }
+    });
+    return issues;
+  }, [boards]);
+
   const handleLoad = useCallback(async (file: File) => {
     try {
       const isValid = (data: unknown): data is ExportedData =>
@@ -91,10 +105,11 @@ export default function BuscaLogoPage() {
       format: "json",
       onSave: handleSave,
       onLoad: handleLoad,
+      validate,
     });
 
     return () => resetHeader();
-  }, [setHeader, resetHeader, handleSave, handleLoad]);
+  }, [setHeader, resetHeader, handleSave, handleLoad, validate]);
 
   const handleAddBoard = () => {
     if (boards.length >= MAX_BOARDS) return;

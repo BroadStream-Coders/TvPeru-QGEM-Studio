@@ -76,9 +76,7 @@ modos"** para forzar el guardado. Es **opt-in**: el colector solo necesita pasar
 | **Galería de Fotos**       | ⬜ Falta (validar presencia de imagen)              |
 | **Intruso**                | ⬜ Falta (validar imágenes + que exista un intruso) |
 | **De par en par**          | ⬜ Falta (validar que cada carta tenga contenido)   |
-
-**No aplica con claridad:** Busca Logo (no hay "campos" de texto/imagen; a lo sumo se
-podría validar que cada tablero tenga al menos un logo marcado).
+| **Busca Logo**             | ✅ Implementado (cada tablero con al menos un logo marcado) |
 
 ---
 
@@ -139,7 +137,7 @@ De par en par, Busca Logo.
 | Operaciones Combinadas |  —   |     ✅     |  ✅  |
 | La Sabes o No          |  —   |     ✅     |  ✅  |
 | Galería de Fotos       |  ⬜  |     ⬜     |  ✅  |
-| Busca Logo             |  —   | (parcial)  |  —   |
+| Busca Logo             |  —   |     ✅     |  —   |
 | Si o No                |  —   |     ✅     |  ✅  |
 
 Leyenda: ✅ implementado · ⬜ falta (aplicable) · — no aplica por diseño.
