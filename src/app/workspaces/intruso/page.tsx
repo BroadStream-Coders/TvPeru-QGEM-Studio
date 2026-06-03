@@ -5,6 +5,7 @@ import { VenetianMask, Layers } from "lucide-react";
 import { nanoid } from "nanoid";
 import { saveAsZip, loadZipFile } from "@/helpers/persistence";
 import { useWorkspaceHeader } from "@/hooks/use-workspace-header";
+import { ValidationIssue, isBlank, formatPath } from "@/helpers/validation";
 import { LevelTabs } from "@/components/shared/LevelTabs";
 import { Level1View } from "./components/Level1View";
 import { Level2View } from "./components/Level2View";
@@ -38,7 +39,6 @@ interface SessionData {
 }
 
 interface TextRound {
-  description: string;
   imagePath: string;
   answerIndex: number;
   choices: string[];
@@ -267,7 +267,6 @@ export default function Page() {
   const handleSave = useCallback(async () => {
     const sessionData: SessionData = {
       textRounds: roundsPerLevel.nivel1.map((round) => ({
-        description: round.context,
         imagePath: round.photos[0]?.file
           ? `images/${nanoid(4)}_${round.photos[0].file.name}`
           : "",
@@ -324,6 +323,41 @@ export default function Page() {
     } catch {
       alert("Error al exportar los datos.");
     }
+  }, [roundsPerLevel]);
+
+  // Solo se valida el Nivel 1; el Nivel 2 aún no se usa.
+  const validate = useCallback((): ValidationIssue[] => {
+    const issues: ValidationIssue[] = [];
+
+    roundsPerLevel.nivel1.forEach((round, roundIndex) => {
+      const roundLabel = formatPath("Nivel 1", `Ronda ${roundIndex + 1}`);
+
+      if (!round.photos[0]?.file) {
+        issues.push({
+          path: formatPath(roundLabel, "Imagen"),
+          message: "Falta la imagen.",
+        });
+      }
+
+      const options = round.options ?? [];
+      options.forEach((option, optionIndex) => {
+        if (isBlank(option.text)) {
+          issues.push({
+            path: formatPath(roundLabel, `Opción ${optionIndex + 1}`),
+            message: "Falta el texto de la opción.",
+          });
+        }
+      });
+
+      if (!options.some((o) => o.isIntruso)) {
+        issues.push({
+          path: roundLabel,
+          message: "No hay un intruso marcado.",
+        });
+      }
+    });
+
+    return issues;
   }, [roundsPerLevel]);
 
   const handleLoad = useCallback(async (file: File) => {
@@ -385,7 +419,7 @@ export default function Page() {
 
             return {
               id: nanoid(),
-              context: roundMeta.description || "",
+              context: "",
               photos: [
                 {
                   id: nanoid(),
@@ -469,8 +503,9 @@ export default function Page() {
       format: "zip",
       onSave: handleSave,
       onLoad: handleLoad,
+      validate,
     });
-  }, [setHeader, handleSave, handleLoad]);
+  }, [setHeader, handleSave, handleLoad, validate]);
 
   return (
     <main className="flex-1 overflow-hidden">

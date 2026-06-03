@@ -74,7 +74,7 @@ modos"** para forzar el guardado. Es **opt-in**: el colector solo necesita pasar
 | **Reto Cruzado**           | ⬜ Falta                                            |
 | **Operaciones Combinadas** | ✅ Implementado (operación vacía / sin colocar + tablero sin operaciones) |
 | **Galería de Fotos**       | ✅ Implementado (imagen por foto)                   |
-| **Intruso**                | ⬜ Falta (validar imágenes + que exista un intruso) |
+| **Intruso**                | ✅ Implementado (solo Nivel 1: imagen + opciones + intruso marcado) |
 | **De par en par**          | ⬜ Falta (validar que cada carta tenga contenido)   |
 | **Busca Logo**             | ✅ Implementado (cada tablero con al menos un logo marcado) |
 
@@ -130,7 +130,7 @@ De par en par, Busca Logo.
 | Mi Libro Favorito      |  —   |     ✅     |  ✅  |
 | Deletreo               |  —   |     ✅     |  ✅  |
 | Cálculo Mental         |  —   |     ✅     |  ✅  |
-| Intruso                |  ✅  |     ⬜     |  ✅  |
+| Intruso                |  ✅  |     ✅     |  ✅  |
 | Album                  |  ⬜  |     ✅     |  ✅  |
 | Reto Cruzado           |  —   |     ⬜     |  ✅  |
 | De par en par          |  ⬜  |     ⬜     |  —   |

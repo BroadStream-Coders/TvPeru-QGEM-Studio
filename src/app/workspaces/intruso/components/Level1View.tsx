@@ -61,7 +61,6 @@ export function Level1View({
           key={round.id}
           index={roundIndex + 1}
           photo={round.photos[0]}
-          context={round.context}
           options={normalizeOptions(round.options)}
           onUpdatePhoto={(updates) =>
             onUpdatePhotoInRound(round.id, round.photos[0].id, updates)

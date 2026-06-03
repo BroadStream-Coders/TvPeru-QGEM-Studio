@@ -4,7 +4,6 @@ import { GroupColumn } from "@/components/shared/group-column/layout/GroupColumn
 import { GroupFooter } from "@/components/shared/group-column/layout/GroupFooter";
 import { RowsContainer } from "@/components/shared/group-column/components/RowsContainer";
 import { AddRowButton } from "@/components/shared/group-column/components/AddRowButton";
-import { DescriptionInput } from "@/components/shared/group-column/components/DescriptionInput";
 import { QuickLoad } from "@/components/shared/group-column/components/QuickLoad";
 import { X, AlertCircle } from "lucide-react";
 import { Card } from "./Card";
@@ -25,10 +24,9 @@ interface Option {
 interface Level1ColumnProps {
   index: number;
   photo: Photo;
-  context: string;
   options: Option[];
   onUpdatePhoto: (updates: Partial<Photo>) => void;
-  onUpdateRound: (updates: { context?: string; options?: Option[] }) => void;
+  onUpdateRound: (updates: { options?: Option[] }) => void;
   onRemoveColumn: () => void;
   onQuickLoad: (data: string[][]) => void;
 }
@@ -36,7 +34,6 @@ interface Level1ColumnProps {
 export function Level1Column({
   index,
   photo,
-  context,
   options,
   onUpdatePhoto,
   onUpdateRound,
@@ -77,12 +74,6 @@ export function Level1Column({
       currentCapacity={options.length}
       maxCapacity={4}
     >
-      <DescriptionInput
-        value={context}
-        onChange={(val) => onUpdateRound({ context: val })}
-        placeholder="Escribe el contexto..."
-      />
-
       <RowsContainer>
         {/* Imagen única */}
         <div className="space-y-1.5">

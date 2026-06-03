@@ -48,7 +48,8 @@ export function ImagePicker({
   return (
     <>
       <div
-        className={`relative w-full aspect-square overflow-hidden rounded-lg bg-muted/20 border border-dashed border-border hover:border-brand/50 transition-colors cursor-pointer group`}
+        className={`relative w-full ${crop ? "" : "aspect-square"} overflow-hidden rounded-lg bg-muted/20 border border-dashed border-border hover:border-brand/50 transition-colors cursor-pointer group`}
+        style={crop ? { aspectRatio: `${crop.x} / ${crop.y}` } : undefined}
         onClick={(e) => {
           // If clicking explicitly on the edit crop button, don't trigger upload
           if ((e.target as HTMLElement).closest(".edit-crop-btn")) return;
