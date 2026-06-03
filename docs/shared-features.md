@@ -69,8 +69,8 @@ modos"** para forzar el guardado. Es **opt-in**: el colector solo necesita pasar
 | **La Sabes o No**          | ✅ Implementado (enunciado + 2 respuestas)          |
 | **Cálculo Mental**         | ✅ Implementado (enunciado + respuesta por casilla) |
 | **Album**                  | ✅ Implementado (pregunta + imagen por carta)       |
-| **Mi Libro Favorito**      | ⬜ Falta                                            |
-| **Deletreo**               | ⬜ Falta                                            |
+| **Mi Libro Favorito**      | ✅ Implementado (nombre de jugador + enunciado + respuesta) |
+| **Deletreo**               | ✅ Implementado (palabra por casilla)               |
 | **Reto Cruzado**           | ⬜ Falta                                            |
 | **Operaciones Combinadas** | ⬜ Falta                                            |
 | **Galería de Fotos**       | ⬜ Falta (validar presencia de imagen)              |
@@ -129,8 +129,8 @@ De par en par, Busca Logo.
 
 | Colector               | Crop | Validación | Lego |
 | ---------------------- | :--: | :--------: | :--: |
-| Mi Libro Favorito      |  —   |     ⬜     |  ✅  |
-| Deletreo               |  —   |     ⬜     |  ✅  |
+| Mi Libro Favorito      |  —   |     ✅     |  ✅  |
+| Deletreo               |  —   |     ✅     |  ✅  |
 | Cálculo Mental         |  —   |     ✅     |  ✅  |
 | Intruso                |  ✅  |     ⬜     |  ✅  |
 | Album                  |  ⬜  |     ✅     |  ✅  |

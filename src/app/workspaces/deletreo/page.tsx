@@ -7,6 +7,7 @@ import { getColumnData } from "@/helpers/data-processing";
 import { GroupsContainer } from "@/components/shared/group-column/layout/GroupsContainer";
 import { useWorkspaceHeader } from "@/hooks/use-workspace-header";
 import { useWorkspaceGroups } from "@/hooks/use-workspace-groups";
+import { ValidationIssue, isBlank, formatPath } from "@/helpers/validation";
 import { DeletreoColumn } from "./components/DeletreoColumn";
 
 const DEFAULT_FILENAME = "Deletreo.json";
@@ -43,6 +44,22 @@ export default function DeletreoPage() {
     saveAsJson(DEFAULT_FILENAME, data);
   }, [groups]);
 
+  const validate = useCallback((): ValidationIssue[] => {
+    const issues: ValidationIssue[] = [];
+    groups.forEach((words, groupIndex) => {
+      const groupLabel = `Ronda ${groupIndex + 1}`;
+      words.forEach((word, wordIndex) => {
+        if (isBlank(word)) {
+          issues.push({
+            path: formatPath(groupLabel, `Palabra ${wordIndex + 1}`),
+            message: "Falta la palabra.",
+          });
+        }
+      });
+    });
+    return issues;
+  }, [groups]);
+
   const handleLoad = useCallback(
     async (file: File) => {
       try {
@@ -73,8 +90,9 @@ export default function DeletreoPage() {
       format: "json",
       onSave: handleSave,
       onLoad: handleLoad,
+      validate,
     });
-  }, [setHeader, handleSave, handleLoad]);
+  }, [setHeader, handleSave, handleLoad, validate]);
 
   return (
     <main className="flex-1 overflow-hidden">

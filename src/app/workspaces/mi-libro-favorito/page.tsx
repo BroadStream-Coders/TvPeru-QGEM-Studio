@@ -6,6 +6,7 @@ import { saveAsJson, loadJsonFile } from "@/helpers/persistence";
 import { GroupsContainer } from "@/components/shared/group-column/layout/GroupsContainer";
 import { useWorkspaceHeader } from "@/hooks/use-workspace-header";
 import { useWorkspaceGroups } from "@/hooks/use-workspace-groups";
+import { ValidationIssue, isBlank, formatPath } from "@/helpers/validation";
 import { Column } from "./components/Column";
 import { Players } from "./components/Players";
 
@@ -86,6 +87,40 @@ export default function MiLibroFavoritoPage() {
     await saveAsJson(DEFAULT_FILENAME, sessionData);
   }, [players, groups]);
 
+  const validate = useCallback((): ValidationIssue[] => {
+    const issues: ValidationIssue[] = [];
+
+    players.forEach((player, playerIndex) => {
+      if (isBlank(player.name)) {
+        issues.push({
+          path: formatPath(`Jugador ${playerIndex + 1}`, "Nombre"),
+          message: "Falta el nombre del jugador.",
+        });
+      }
+    });
+
+    groups.forEach((slots, groupIndex) => {
+      const groupLabel = `Ronda ${groupIndex + 1}`;
+      slots.forEach((slot, slotIndex) => {
+        const rowLabel = `Fila ${slotIndex + 1}`;
+        if (isBlank(slot.question)) {
+          issues.push({
+            path: formatPath(groupLabel, rowLabel, "Enunciado"),
+            message: "Falta el enunciado.",
+          });
+        }
+        if (isBlank(slot.answer)) {
+          issues.push({
+            path: formatPath(groupLabel, rowLabel, "Respuesta"),
+            message: "Falta la respuesta.",
+          });
+        }
+      });
+    });
+
+    return issues;
+  }, [players, groups]);
+
   const handleLoad = useCallback(
     async (file: File) => {
       try {
@@ -119,8 +154,9 @@ export default function MiLibroFavoritoPage() {
       format: "json",
       onSave: handleSave,
       onLoad: handleLoad,
+      validate,
     });
-  }, [setHeader, handleSave, handleLoad]);
+  }, [setHeader, handleSave, handleLoad, validate]);
 
   return (
     <main className="flex-1 overflow-hidden">
