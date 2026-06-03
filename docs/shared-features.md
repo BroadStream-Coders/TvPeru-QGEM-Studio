@@ -72,7 +72,7 @@ modos"** para forzar el guardado. Es **opt-in**: el colector solo necesita pasar
 | **Mi Libro Favorito**      | ✅ Implementado (nombre de jugador + enunciado + respuesta) |
 | **Deletreo**               | ✅ Implementado (palabra por casilla)               |
 | **Reto Cruzado**           | ⬜ Falta                                            |
-| **Operaciones Combinadas** | ⬜ Falta                                            |
+| **Operaciones Combinadas** | ✅ Implementado (operación vacía / sin colocar + tablero sin operaciones) |
 | **Galería de Fotos**       | ⬜ Falta (validar presencia de imagen)              |
 | **Intruso**                | ⬜ Falta (validar imágenes + que exista un intruso) |
 | **De par en par**          | ⬜ Falta (validar que cada carta tenga contenido)   |
@@ -136,7 +136,7 @@ De par en par, Busca Logo.
 | Album                  |  ⬜  |     ✅     |  ✅  |
 | Reto Cruzado           |  —   |     ⬜     |  ✅  |
 | De par en par          |  ⬜  |     ⬜     |  —   |
-| Operaciones Combinadas |  —   |     ⬜     |  ✅  |
+| Operaciones Combinadas |  —   |     ✅     |  ✅  |
 | La Sabes o No          |  —   |     ✅     |  ✅  |
 | Galería de Fotos       |  ⬜  |     ⬜     |  ✅  |
 | Busca Logo             |  —   | (parcial)  |  —   |

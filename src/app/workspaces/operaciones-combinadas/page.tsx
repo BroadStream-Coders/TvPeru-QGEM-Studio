@@ -5,6 +5,7 @@ import { Sigma } from "lucide-react";
 import { nanoid } from "nanoid";
 import { useWorkspaceHeader } from "@/hooks/use-workspace-header";
 import { saveAsJson, loadJsonFile } from "@/helpers/persistence";
+import { ValidationIssue, isBlank, formatPath } from "@/helpers/validation";
 
 import { RoundData, BoardData, Operation, Direction } from "./types";
 import { RoundsBoardsSidebar } from "./components/RoundsBoardsSidebar";
@@ -106,6 +107,43 @@ export default function OperacionesCombinadasPage() {
     saveAsJson(DEFAULT_FILENAME, payload);
   }, [rounds]);
 
+  const validate = useCallback((): ValidationIssue[] => {
+    const issues: ValidationIssue[] = [];
+
+    rounds.forEach((round, roundIndex) => {
+      const roundLabel = `Ronda ${roundIndex + 1}`;
+      round.boards.forEach((board, boardIndex) => {
+        const boardLabel = `Tablero ${boardIndex + 1}`;
+
+        const placedCount = board.operations.filter((op) => op.sequence).length;
+        if (placedCount === 0) {
+          issues.push({
+            path: formatPath(roundLabel, boardLabel),
+            message: "El tablero no tiene operaciones colocadas.",
+          });
+        }
+
+        board.operations.forEach((op, opIndex) => {
+          const opLabel = `Operación ${opIndex + 1}`;
+          if (isBlank(op.text)) {
+            issues.push({
+              path: formatPath(roundLabel, boardLabel, opLabel),
+              message: "La operación está vacía.",
+            });
+          } else if (!op.sequence) {
+            issues.push({
+              path: formatPath(roundLabel, boardLabel, opLabel),
+              message:
+                "La operación no está colocada en el tablero (se perderá al guardar).",
+            });
+          }
+        });
+      });
+    });
+
+    return issues;
+  }, [rounds]);
+
   const handleLoad = useCallback(async (file: File) => {
     try {
       const isValid = (data: unknown): data is ExportedData =>
@@ -159,10 +197,11 @@ export default function OperacionesCombinadasPage() {
       format: "json",
       onSave: handleSave,
       onLoad: handleLoad,
+      validate,
     });
 
     return () => resetHeader();
-  }, [setHeader, resetHeader, handleSave, handleLoad]);
+  }, [setHeader, resetHeader, handleSave, handleLoad, validate]);
 
   // Sync selectedBoardId with currentRound if navigating causes mismatch is handled by handlers natively
 
