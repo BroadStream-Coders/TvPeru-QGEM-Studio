@@ -57,4 +57,6 @@ El código está estructurado para maximizar la reutilización de componentes en
 - **Componentes por contrato**: Se utilizan componentes genéricos que reciben `children` en lugar de crear componentes altamente acoplados al contenido de cada juego.
 - **IDs de entidades**: Siempre se utiliza `nanoid()` para generar IDs (ej. rondas, fotos), nunca índices de arreglos.
 
-Para conocer las tareas pendientes y recomendaciones, consulta el archivo `Roadmap.md`.
+El trabajo operativo (tareas, deuda técnica, ideas, terminado) se gestiona en
+`docs/tracking/`. El funcionamiento de los sistemas compartidos está documentado en
+`docs/systems/` (crop, validación, "Lego").

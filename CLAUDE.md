@@ -52,7 +52,7 @@ Note: There is no test script configured; testing is done manually.
 
 - Adding a new workspace: Create a folder under `src/app/workspaces/[name]`, add a `page.tsx` that registers the header via `useWorkspaceHeader().setHeader({ title, icon, format, onSave, onLoad, validate })` inside a `useEffect` (and `resetHeader()` on unmount), and implement workspace-specific components in a `components` subfolder. The shared `WorkspaceHeader` in `layout.tsx` renders the header + `FileActions` from that store.
 - Adding a shared component: Place in `src/components/shared` and ensure it's generic and reusable.
-- Modifying validation: Refer to Roadmap.md for planned validation engine; currently validation is ad-hoc.
+- Modifying validation: The pre-export validation system is documented in `docs/systems/validation.md` (each workspace passes a `validate` to `setHeader`).
 
 ## Guidelines
 
@@ -60,4 +60,4 @@ Note: There is no test script configured; testing is done manually.
 - Keep workspace pages focused on orchestration; move UI to shared components.
 - Use TypeScript strictly; avoid `any` types.
 - When adding new dependencies, run `pnpm install` and commit updated lockfile.
-- For image-related features, be mindful of ObjectURL leaks; use `skipCleanupOnUnmount` when necessary as noted in Roadmap.md.
+- For image-related features, be mindful of ObjectURL leaks; use `skipCleanupOnUnmount` when necessary (see `docs/systems/crop.md`).

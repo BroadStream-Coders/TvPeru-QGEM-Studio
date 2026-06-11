@@ -1,14 +1,15 @@
 # Deuda Técnica
 
 Registro de atajos, decisiones pendientes y riesgos a futuro de este proyecto.
+Código `TD-###` (nunca se reutiliza). Al resolverse, la entrada se mueve al
+changelog y se borra de aquí.
 
 **Formato de cada entrada:**
-
 - **Ubicación:** `archivo:línea` afectado.
 - **Riesgo:** del 1 al 10 (1-3 cosmético · 4-6 ralentiza/moderado · 7-9 bug latente o seguridad · 10 crítico).
 - **Problema:** qué está mal, sintetizado.
 - **Impacto futuro:** qué puede causar si no se atiende.
-- **Fecha** y **Estado** (Abierto / Resuelto).
+- **Fecha** y **Estado** (Abierto / En progreso).
 
 ---
 
@@ -27,15 +28,6 @@ Registro de atajos, decisiones pendientes y riesgos a futuro de este proyecto.
 - **Problema:** Usa `style={{ height: "calc(100vh - 48px - 36px)" }}`, restando a mano las alturas del header (48px) y footer (36px). Son números mágicos duplicados que además parten de `100vh` aunque ya vive dentro de un layout `h-screen`, ignorando el espacio realmente disponible.
 - **Impacto futuro:** Si cambia la altura del header o del footer, este cálculo queda desfasado y el área se descuadra (scroll doble o contenido cortado). Frágil ante cualquier ajuste de chrome de la app.
 - **Fecha:** 2026-06-01 · **Estado:** Abierto
-
-## [TD-003] Galería de Fotos usa un patrón de header distinto al resto
-
-- **Ubicación:** `src/app/workspaces/galeria-fotos/page.tsx:125`
-- **Riesgo:** 4/10
-- **Problema:** Galería de Fotos monta su cabecera con `WorkspaceShell` + `FileActions` directos, mientras todos los demás colectores usan el patrón store (`useWorkspaceHeader.setHeader`) que pinta `WorkspaceHeader`. Conviven dos formas de hacer lo mismo.
-- **Impacto futuro:** Cualquier mejora transversal al header (como el gate de validación, que vive en `FileActions` vía store) hay que implementarla dos veces o se olvida en Galería. Inconsistencia que multiplica el mantenimiento.
-- **Fecha:** 2026-06-01 · **Estado:** Resuelto (2026-06-03)
-- **Resolución:** Galería migrada al patrón store (`setHeader` con `validate`); `WorkspaceShell.tsx` eliminado por quedar sin uso. Se descartó portar el badge "N grupos". Único patrón de header en todo el proyecto.
 
 ## [TD-004] Alto fijo del recortador de imágenes
 

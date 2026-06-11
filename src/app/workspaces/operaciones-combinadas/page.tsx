@@ -451,6 +451,43 @@ export default function OperacionesCombinadasPage() {
       return val.replace(/^\((.+)\)$/, "$1");
     };
 
+    // Una racha de hasta 5 celdas se emite tal cual. Una racha más larga es
+    // una cadena encadenada (a op b = r op2 c = r2) y se parte en igualdades
+    // independientes de 5 celdas con ventana de paso 4 (la celda resultado de
+    // una es el operando de la siguiente, compartida en el grid).
+    const pushRun = (
+      values: string[],
+      startX: number,
+      startY: number,
+      direction: Direction,
+    ) => {
+      const dir = direction === "H" ? { x: 1, y: 0 } : { x: 0, y: 1 };
+
+      if (values.length <= 5) {
+        newOperations.push({
+          id: nanoid(),
+          text: values.join(""),
+          direction,
+          sequence: { values, position: { x: startX, y: startY }, direction: dir },
+        });
+        return;
+      }
+
+      for (let i = 0; i + 5 <= values.length; i += 4) {
+        const chunk = values.slice(i, i + 5);
+        newOperations.push({
+          id: nanoid(),
+          text: chunk.join(""),
+          direction,
+          sequence: {
+            values: chunk,
+            position: { x: startX + i * dir.x, y: startY + i * dir.y },
+            direction: dir,
+          },
+        });
+      }
+    };
+
     const rowsLength = Math.min(GRID_SIZE, matrix.length);
 
     // Escaneo Horizontal
@@ -466,17 +503,7 @@ export default function OperacionesCombinadasPage() {
             len++;
           }
           if (len >= 3) {
-            const text = values.join("");
-            newOperations.push({
-              id: nanoid(),
-              text,
-              direction: "H",
-              sequence: {
-                values,
-                position: { x, y },
-                direction: { x: 1, y: 0 },
-              },
-            });
+            pushRun(values, x, y, "H");
           }
           x += len;
         } else {
@@ -498,17 +525,7 @@ export default function OperacionesCombinadasPage() {
             len++;
           }
           if (len >= 3) {
-            const text = values.join("");
-            newOperations.push({
-              id: nanoid(),
-              text,
-              direction: "V",
-              sequence: {
-                values,
-                position: { x, y },
-                direction: { x: 0, y: 1 },
-              },
-            });
+            pushRun(values, x, y, "V");
           }
           y += len;
         } else {
