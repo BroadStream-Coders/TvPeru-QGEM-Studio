@@ -8,7 +8,7 @@ import { AuthButton } from "./AuthButton";
 import { useWorkspaceHeader } from "@/hooks/use-workspace-header";
 
 export function WorkspaceHeader() {
-  const { title, icon, format, onSave, onLoad, validate } =
+  const { title, icon, format, onSave, onLoad, validate, upload } =
     useWorkspaceHeader();
 
   if (!title) return null;
@@ -43,6 +43,7 @@ export function WorkspaceHeader() {
             onSave={onSave}
             onLoad={onLoad}
             validate={validate}
+            upload={upload}
           />
         )}
         <AuthButton />

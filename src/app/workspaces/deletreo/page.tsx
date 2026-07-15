@@ -3,6 +3,7 @@
 import { useEffect, useCallback } from "react";
 import { SpellCheck } from "lucide-react";
 import { saveAsJson, loadJsonFile } from "@/helpers/persistence";
+import { jsonBlob } from "@/helpers/storage";
 import { getColumnData } from "@/helpers/data-processing";
 import { GroupsContainer } from "@/components/shared/group-column/layout/GroupsContainer";
 import { useWorkspaceHeader } from "@/hooks/use-workspace-header";
@@ -39,10 +40,14 @@ export default function DeletreoPage() {
     replaceGroup(groupIndex, getColumnData(matrix, 0));
   };
 
+  const buildData = useCallback(
+    (): DeletreoData => ({ groups: groups.map((words) => ({ words })) }),
+    [groups],
+  );
+
   const handleSave = useCallback(() => {
-    const data: DeletreoData = { groups: groups.map((words) => ({ words })) };
-    saveAsJson(DEFAULT_FILENAME, data);
-  }, [groups]);
+    saveAsJson(DEFAULT_FILENAME, buildData());
+  }, [buildData]);
 
   const validate = useCallback((): ValidationIssue[] => {
     const issues: ValidationIssue[] = [];
@@ -91,8 +96,12 @@ export default function DeletreoPage() {
       onSave: handleSave,
       onLoad: handleLoad,
       validate,
+      upload: {
+        filename: "deletreo.json",
+        getBlob: () => jsonBlob(buildData()),
+      },
     });
-  }, [setHeader, handleSave, handleLoad, validate]);
+  }, [setHeader, handleSave, handleLoad, validate, buildData]);
 
   return (
     <main className="flex-1 overflow-hidden">

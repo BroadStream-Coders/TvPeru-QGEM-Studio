@@ -30,21 +30,27 @@ export default function DataCheck() {
   const list = useCallback(async () => {
     setBusy(true);
     setError(null);
-    const { data, error } = await createClient()
-      .storage.from(BUCKET)
-      .list("", { sortBy: { column: "name", order: "asc" } });
-    if (error) {
-      setError(error.message);
-    } else {
-      setEntries(
-        data
-          .filter((f) => f.name !== ".emptyFolderPlaceholder")
-          .map((f) => ({
-            name: f.name,
-            size: f.metadata?.size,
-            updatedAt: f.updated_at ?? undefined,
-          })),
-      );
+    try {
+      const supabase = createClient();
+      const all: Entry[] = [];
+      for (const folder of ["oficial", "ejemplo"]) {
+        const { data, error } = await supabase.storage
+          .from(BUCKET)
+          .list(folder, { sortBy: { column: "name", order: "asc" } });
+        if (error) throw new Error(error.message);
+        all.push(
+          ...data
+            .filter((f) => f.name !== ".emptyFolderPlaceholder")
+            .map((f) => ({
+              name: `${folder}/${f.name}`,
+              size: f.metadata?.size,
+              updatedAt: f.updated_at ?? undefined,
+            })),
+        );
+      }
+      setEntries(all);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
     }
     setBusy(false);
   }, []);

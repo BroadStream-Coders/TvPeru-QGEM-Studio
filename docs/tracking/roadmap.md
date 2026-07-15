@@ -84,7 +84,7 @@ Al terminar una tarea se mueve al changelog y se borra de aquí.
 - **Hecho cuando:** Hay bucket(s) con reglas de acceso (solo producción), se pueden subir y recuperar datos, y las opciones de storage solo se muestran a usuarios con acceso de producción.
 - **Dificultad:** 7/10
 - **Depende de:** RM-005, RM-006
-- **Fecha:** 2026-06-11 · **Estado:** Abierto
+- **Fecha:** 2026-06-11 · **Estado:** En progreso (2026-07-15) — bucket `data` privado con policies por allowlist (`production_access`), carpetas `oficial/` y `ejemplo/`, split button de subida en FileActions estrenado en Deletreo. RM-006 quedó cubierto en versión mínima: la tabla se edita a mano en el dashboard.
 
 ## [RM-011] Validación aritmética en Operaciones Combinadas
 
@@ -97,3 +97,12 @@ Al terminar una tarea se mueve al changelog y se borra de aquí.
 - **Objetivo:** Que el sistema detecte y reporte cualquier `sequence.values` que no forme una igualdad completa de 5 celdas (`[operandoA, operador, operandoB, "=", resultado]`).
 - **Hecho cuando:** Una secuencia con length ≠ 5 o a la que le falten el `"="` y/o el resultado se reporta/rechaza antes de exportar, indicando dónde está.
 - **Fecha:** 2026-06-11 · **Estado:** Abierto
+
+## [RM-013] Trim de datos en los colectores
+
+- **Objetivo:** Aplicar trim a los datos (espacios accidentales al inicio/final)
+  antes de exportar/subir. Detalle detectado por Esteban el 2026-07-15; alcance
+  exacto por plantear (¿al escribir, al validar o al exportar? ¿todos los
+  colectores?).
+- **Hecho cuando:** Por definir.
+- **Fecha:** 2026-07-15 · **Estado:** Abierto
