@@ -12,6 +12,12 @@ Resumen en ≤2 líneas de lo que se hizo.
 
 ---
 
+## 2026-07-15 — [RM-010] Storage de Supabase (subir / bajar datos)
+Bucket privado `data` (carpetas `oficial/` y `ejemplo/`) con policies por allowlist (`production_access`). Split buttons en `FileActions` (Guardar→subir, Cargar→bajar, con confirmaciones) para los 8 colectores JSON; los ZIP quedan en RM-014.
+
+## 2026-07-15 — [RM-005] Login con Google (Supabase Auth)
+`AuthButton` + `use-auth` (portados de Games, adaptados a tokens shadcn) en home y WorkspaceHeader: sesión con Google, avatar con dropdown y cierre de sesión.
+
 ## 2026-06-03 — [TD-003] Galería de Fotos migrada al patrón store de header
 Galería pasó a `setHeader` con `validate` y se eliminó `WorkspaceShell`. Patrón único de header (store) en todo el proyecto.
 

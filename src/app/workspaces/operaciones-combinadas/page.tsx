@@ -5,6 +5,7 @@ import { Sigma } from "lucide-react";
 import { nanoid } from "nanoid";
 import { useWorkspaceHeader } from "@/hooks/use-workspace-header";
 import { saveAsJson, loadJsonFile } from "@/helpers/persistence";
+import { jsonBlob } from "@/helpers/storage";
 import { ValidationIssue, isBlank, formatPath } from "@/helpers/validation";
 
 import { RoundData, BoardData, Operation, Direction } from "./types";
@@ -84,7 +85,7 @@ export default function OperacionesCombinadasPage() {
       ? currentRound.boards[currentBoardIndex]
       : currentRound?.boards[0];
 
-  const handleSave = useCallback(() => {
+  const buildData = useCallback(() => {
     const payload = {
       rounds: rounds.map((r) => ({
         boards: r.boards.map((b) => ({
@@ -104,8 +105,12 @@ export default function OperacionesCombinadasPage() {
         })),
       })),
     };
-    saveAsJson(DEFAULT_FILENAME, payload);
+    return payload;
   }, [rounds]);
+
+  const handleSave = useCallback(() => {
+    saveAsJson(DEFAULT_FILENAME, buildData());
+  }, [buildData]);
 
   const validate = useCallback((): ValidationIssue[] => {
     const issues: ValidationIssue[] = [];
@@ -198,10 +203,14 @@ export default function OperacionesCombinadasPage() {
       onSave: handleSave,
       onLoad: handleLoad,
       validate,
+      upload: {
+        filename: DEFAULT_FILENAME,
+        getBlob: () => jsonBlob(buildData()),
+      },
     });
 
     return () => resetHeader();
-  }, [setHeader, resetHeader, handleSave, handleLoad, validate]);
+  }, [setHeader, resetHeader, handleSave, handleLoad, validate, buildData]);
 
   // Sync selectedBoardId with currentRound if navigating causes mismatch is handled by handlers natively
 

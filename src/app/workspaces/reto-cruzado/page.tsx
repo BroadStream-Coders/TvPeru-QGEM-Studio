@@ -3,6 +3,7 @@
 import { useRef, useEffect, useCallback } from "react";
 import { Layers, Shuffle } from "lucide-react";
 import { saveAsJson, loadJsonFile } from "@/helpers/persistence";
+import { jsonBlob } from "@/helpers/storage";
 import { useWorkspaceHeader } from "@/hooks/use-workspace-header";
 import { LevelTabs } from "@/components/shared/LevelTabs";
 import { nanoid } from "nanoid";
@@ -41,7 +42,7 @@ export default function RetoCruzadoPage() {
   const setHeader = useWorkspaceHeader((s) => s.setHeader);
   const resetHeader = useWorkspaceHeader((s) => s.resetHeader);
 
-  const handleSave = useCallback(async () => {
+  const buildData = useCallback(() => {
     const data0 = level0Ref.current?.getData() || [];
     const data1 = level1Ref.current?.getData() || [];
     const data2 = level2Ref.current?.getData() || [];
@@ -99,12 +100,16 @@ export default function RetoCruzadoPage() {
       },
     };
 
+    return exportData;
+  }, []);
+
+  const handleSave = useCallback(() => {
     try {
-      await saveAsJson(DEFAULT_FILENAME, exportData);
+      saveAsJson(DEFAULT_FILENAME, buildData());
     } catch {
       alert("Error al exportar los datos.");
     }
-  }, []);
+  }, [buildData]);
 
   const handleLoad = useCallback(async (file: File) => {
     try {
@@ -189,8 +194,12 @@ export default function RetoCruzadoPage() {
       format: "json",
       onSave: handleSave,
       onLoad: handleLoad,
+      upload: {
+        filename: DEFAULT_FILENAME,
+        getBlob: () => jsonBlob(buildData()),
+      },
     });
-  }, [setHeader, handleSave, handleLoad]);
+  }, [setHeader, handleSave, handleLoad, buildData]);
 
   return (
     <main className="flex-1 overflow-hidden">

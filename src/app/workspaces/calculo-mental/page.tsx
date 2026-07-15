@@ -148,7 +148,7 @@ export default function CalculoMentalPage() {
       onLoad: handleLoad,
       validate,
       upload: {
-        filename: "calculo-mental.json",
+        filename: DEFAULT_FILENAME,
         getBlob: () => jsonBlob(buildData()),
       },
     });

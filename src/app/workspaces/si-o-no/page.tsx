@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { ToggleRight } from "lucide-react";
 import { saveAsJson, loadJsonFile } from "@/helpers/persistence";
+import { jsonBlob } from "@/helpers/storage";
 import { GroupsContainer } from "@/components/shared/group-column/layout/GroupsContainer";
 import { useWorkspaceHeader } from "@/hooks/use-workspace-header";
 import { ValidationIssue, isBlank, formatPath } from "@/helpers/validation";
@@ -128,8 +129,8 @@ export default function SiONoPage() {
 
   // ── Save / Load ──
 
-  const handleSave = useCallback(() => {
-    const data: SessionData = {
+  const buildData = useCallback(
+    (): SessionData => ({
       groups: columns.map((col) => ({
         title: col.title.trim(),
         questions: col.rows.map((q) => ({
@@ -142,9 +143,13 @@ export default function SiONoPage() {
                 : null,
         })),
       })),
-    };
-    saveAsJson(DEFAULT_FILENAME, data);
-  }, [columns]);
+    }),
+    [columns],
+  );
+
+  const handleSave = useCallback(() => {
+    saveAsJson(DEFAULT_FILENAME, buildData());
+  }, [buildData]);
 
   const handleLoad = useCallback(async (file: File) => {
     try {
@@ -215,8 +220,12 @@ export default function SiONoPage() {
       onSave: handleSave,
       onLoad: handleLoad,
       validate,
+      upload: {
+        filename: DEFAULT_FILENAME,
+        getBlob: () => jsonBlob(buildData()),
+      },
     });
-  }, [setHeader, handleSave, handleLoad, validate]);
+  }, [setHeader, handleSave, handleLoad, validate, buildData]);
 
   // ── Render ──
 

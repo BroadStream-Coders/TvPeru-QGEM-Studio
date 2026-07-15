@@ -5,6 +5,7 @@ import { Search } from "lucide-react";
 import { nanoid } from "nanoid";
 import { useWorkspaceHeader } from "@/hooks/use-workspace-header";
 import { saveAsJson, loadJsonFile } from "@/helpers/persistence";
+import { jsonBlob } from "@/helpers/storage";
 import { ValidationIssue, formatPath } from "@/helpers/validation";
 
 import { BoardData, isValidBoardSize } from "./types";
@@ -41,7 +42,7 @@ export default function BuscaLogoPage() {
   const currentBoard =
     currentBoardIndex !== -1 ? boards[currentBoardIndex] : boards[0];
 
-  const handleSave = useCallback(() => {
+  const buildData = useCallback((): ExportedData => {
     const validBoards: ExportedBoard[] = [];
     for (const b of boards) {
       if (isValidBoardSize(b.size)) {
@@ -51,8 +52,12 @@ export default function BuscaLogoPage() {
         });
       }
     }
-    saveAsJson(DEFAULT_FILENAME, { boards: validBoards });
+    return { boards: validBoards };
   }, [boards]);
+
+  const handleSave = useCallback(() => {
+    saveAsJson(DEFAULT_FILENAME, buildData());
+  }, [buildData]);
 
   const validate = useCallback((): ValidationIssue[] => {
     const issues: ValidationIssue[] = [];
@@ -106,10 +111,14 @@ export default function BuscaLogoPage() {
       onSave: handleSave,
       onLoad: handleLoad,
       validate,
+      upload: {
+        filename: DEFAULT_FILENAME,
+        getBlob: () => jsonBlob(buildData()),
+      },
     });
 
     return () => resetHeader();
-  }, [setHeader, resetHeader, handleSave, handleLoad, validate]);
+  }, [setHeader, resetHeader, handleSave, handleLoad, validate, buildData]);
 
   const handleAddBoard = () => {
     if (boards.length >= MAX_BOARDS) return;

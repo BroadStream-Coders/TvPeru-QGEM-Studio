@@ -97,7 +97,7 @@ export default function DeletreoPage() {
       onLoad: handleLoad,
       validate,
       upload: {
-        filename: "deletreo.json",
+        filename: DEFAULT_FILENAME,
         getBlob: () => jsonBlob(buildData()),
       },
     });

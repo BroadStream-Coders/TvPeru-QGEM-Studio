@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { BookOpen } from "lucide-react";
 import { saveAsJson, loadJsonFile } from "@/helpers/persistence";
+import { jsonBlob } from "@/helpers/storage";
 import { GroupsContainer } from "@/components/shared/group-column/layout/GroupsContainer";
 import { useWorkspaceHeader } from "@/hooks/use-workspace-header";
 import { useWorkspaceGroups } from "@/hooks/use-workspace-groups";
@@ -73,19 +74,20 @@ export default function MiLibroFavoritoPage() {
     );
   };
 
-  const handleSave = useCallback(async () => {
-    const playersMetadata = players.map((p) => ({
-      playerName: p.name,
-      maxHealth: 3,
-    }));
-
-    const sessionData: SessionData = {
-      players: playersMetadata,
+  const buildData = useCallback(
+    (): SessionData => ({
+      players: players.map((p) => ({
+        playerName: p.name,
+        maxHealth: 3,
+      })),
       groups: groups.map((slots) => ({ slots })),
-    };
+    }),
+    [players, groups],
+  );
 
-    await saveAsJson(DEFAULT_FILENAME, sessionData);
-  }, [players, groups]);
+  const handleSave = useCallback(() => {
+    saveAsJson(DEFAULT_FILENAME, buildData());
+  }, [buildData]);
 
   const validate = useCallback((): ValidationIssue[] => {
     const issues: ValidationIssue[] = [];
@@ -155,8 +157,12 @@ export default function MiLibroFavoritoPage() {
       onSave: handleSave,
       onLoad: handleLoad,
       validate,
+      upload: {
+        filename: DEFAULT_FILENAME,
+        getBlob: () => jsonBlob(buildData()),
+      },
     });
-  }, [setHeader, handleSave, handleLoad, validate]);
+  }, [setHeader, handleSave, handleLoad, validate, buildData]);
 
   return (
     <main className="flex-1 overflow-hidden">

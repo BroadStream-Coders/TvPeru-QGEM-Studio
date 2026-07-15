@@ -41,19 +41,12 @@ Al terminar una tarea se mueve al changelog y se borra de aquí.
 - **Dificultad:** 4/10
 - **Fecha:** 2026-06-11 · **Estado:** Abierto
 
-## [RM-005] Login con Google (Supabase Auth)
-
-- **Objetivo:** Permitir iniciar sesión con Google mediante Supabase Auth.
-- **Hecho cuando:** Hay un botón "Conectarse con Google", la sesión se maneja en la app (estado conectado/desconectado, cerrar sesión).
-- **Dificultad:** 5/10
-- **Fecha:** 2026-06-11 · **Estado:** En progreso (2026-07-15) — AuthButton + use-auth portados desde Games; falta confirmar el login en el navegador.
-
 ## [RM-006] Acceso "producción" gestionado en Supabase
 
 - **Objetivo:** Modelar un acceso de "producción" por cuenta, gestionado manualmente, que habilite las opciones de storage.
 - **Hecho cuando:** Existe un rol/flag de producción por cuenta, un mecanismo para darlo/quitarlo, y la app lo lee y lo expone; sin acceso, el usuario usa el sistema normal sin opciones de storage.
-- **Dificultad:** 6/10
-- **Depende de:** RM-005
+- **Nota (2026-07-15):** el backend ya existe (tabla `production_access` editada a mano en el dashboard; las policies del bucket la consultan para leer y escribir). Lo que falta es la parte de UI: la app hoy muestra las opciones de storage a **cualquier** cuenta logueada (si no está en la lista, la operación falla con error); lo que queda es leer el flag en la app y ocultar las opciones a cuentas sin acceso.
+- **Dificultad:** 6/10 → restante 3/10
 - **Fecha:** 2026-06-11 · **Estado:** Abierto
 
 ## [RM-007] Telemetría: "Guardar de todos modos"
@@ -77,14 +70,6 @@ Al terminar una tarea se mueve al changelog y se borra de aquí.
 - **Hecho cuando:** Hay una barra lateral persistente que convive con el header global de `layout.tsx`.
 - **Dificultad:** 5/10
 - **Fecha:** 2026-06-11 · **Estado:** Abierto
-
-## [RM-010] Storage de Supabase (subir / bajar datos)
-
-- **Objetivo:** Permitir subir y bajar datos desde/hacia el storage de Supabase, solo para cuentas con acceso de producción.
-- **Hecho cuando:** Hay bucket(s) con reglas de acceso (solo producción), se pueden subir y recuperar datos, y las opciones de storage solo se muestran a usuarios con acceso de producción.
-- **Dificultad:** 7/10
-- **Depende de:** RM-005, RM-006
-- **Fecha:** 2026-06-11 · **Estado:** En progreso (2026-07-15) — bucket `data` privado con policies por allowlist (`production_access`), carpetas `oficial/` y `ejemplo/`, split button de subida en FileActions estrenado en Deletreo. RM-006 quedó cubierto en versión mínima: la tabla se edita a mano en el dashboard.
 
 ## [RM-011] Validación aritmética en Operaciones Combinadas
 
@@ -119,4 +104,22 @@ Al terminar una tarea se mueve al changelog y se borra de aquí.
 - **Hecho cuando:** Existe un único mecanismo compartido de trim, todos los
   colectores lo usan (incluido QuickLoad), y se retiró el trim manual duplicado
   de Cálculo Mental.
+- **Fecha:** 2026-07-15 · **Estado:** Abierto
+
+## [RM-014] Storage para colectores ZIP (bundles con imágenes)
+
+- **Objetivo:** Extender la subida/bajada al storage (RM-010, ya operativa para
+  los 8 colectores JSON) a los 4 colectores ZIP: Álbum, Intruso, Galería de
+  Fotos y De par en par.
+- **Bloqueado por (decisión de Esteban, 2026-07-15):** antes hay que resolver el
+  tema del **peso de las imágenes** (tamaño de los bundles a subir/bajar,
+  posible compresión/redimensionado, cuota del bucket). No implementar hasta
+  tener esa conversación.
+- **Camino técnico ya identificado:** separar en `persistence.ts` un
+  `buildZipBlob(jsonData, files)` que `saveAsZip` y el `getBlob` del `upload`
+  compartan (mismo refactor que `buildData` en los JSON); el resto (split
+  buttons, confirmaciones, gate de login) ya lo da `FileActions` gratis.
+- **Hecho cuando:** Los 4 colectores ZIP suben y bajan su bundle de
+  `oficial/`/`ejemplo/` igual que los JSON, con una política de peso definida.
+- **Depende de:** RM-013 no; decisión de peso/imágenes sí.
 - **Fecha:** 2026-07-15 · **Estado:** Abierto
