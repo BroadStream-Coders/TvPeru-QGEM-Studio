@@ -46,7 +46,7 @@ Al terminar una tarea se mueve al changelog y se borra de aquí.
 - **Objetivo:** Permitir iniciar sesión con Google mediante Supabase Auth.
 - **Hecho cuando:** Hay un botón "Conectarse con Google", la sesión se maneja en la app (estado conectado/desconectado, cerrar sesión).
 - **Dificultad:** 5/10
-- **Fecha:** 2026-06-11 · **Estado:** Abierto
+- **Fecha:** 2026-06-11 · **Estado:** En progreso (2026-07-15) — AuthButton + use-auth portados desde Games; falta confirmar el login en el navegador.
 
 ## [RM-006] Acceso "producción" gestionado en Supabase
 

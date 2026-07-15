@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { FileActions } from "./FileActions";
+import { AuthButton } from "./AuthButton";
 
 import { useWorkspaceHeader } from "@/hooks/use-workspace-header";
 
@@ -44,6 +45,7 @@ export function WorkspaceHeader() {
             validate={validate}
           />
         )}
+        <AuthButton />
       </div>
     </header>
   );

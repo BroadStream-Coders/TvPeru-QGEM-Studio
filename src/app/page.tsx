@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AuthButton } from "@/components/shared/AuthButton";
 import {
   SpellCheck,
   Calculator,
@@ -103,10 +104,11 @@ export default function Home() {
             QGEM Studio
           </span>
         </div>
-        <div className="ml-auto">
+        <div className="ml-auto flex items-center gap-3">
           <span className="rounded-full border border-border bg-muted/30 px-2.5 py-0.5 text-2xs font-bold text-muted-foreground uppercase tracking-widest">
             TV Perú
           </span>
+          <AuthButton />
         </div>
       </header>
 
