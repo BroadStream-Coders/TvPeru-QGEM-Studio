@@ -98,11 +98,25 @@ Al terminar una tarea se mueve al changelog y se borra de aquí.
 - **Hecho cuando:** Una secuencia con length ≠ 5 o a la que le falten el `"="` y/o el resultado se reporta/rechaza antes de exportar, indicando dónde está.
 - **Fecha:** 2026-06-11 · **Estado:** Abierto
 
-## [RM-013] Trim de datos en los colectores
+## [RM-013] Centralizar la limpieza de datos (trim) en todos los colectores
 
-- **Objetivo:** Aplicar trim a los datos (espacios accidentales al inicio/final)
-  antes de exportar/subir. Detalle detectado por Esteban el 2026-07-15; alcance
-  exacto por plantear (¿al escribir, al validar o al exportar? ¿todos los
-  colectores?).
-- **Hecho cuando:** Por definir.
+- **Objetivo:** Que TODOS los colectores apliquen trim (espacios accidentales al
+  inicio/final) a los datos, desde un punto central — no repetido a mano en cada
+  workspace.
+- **Contexto (2026-07-15):** hoy es inconsistente: Cálculo Mental ya hace `trim()`
+  en su `buildData` y en su QuickLoad; Deletreo y el resto no hacen ninguno. La
+  decisión de diseño quedó abierta a propósito; opciones a evaluar cuando toque:
+  1. **Al exportar/subir (central):** un deep-trim de strings en `saveAsJson` /
+     `jsonBlob` (helpers compartidos) — cubre todos los colectores sin tocarlos,
+     pero lo que se ve en pantalla puede diferir de lo exportado.
+  2. **Al cargar/escribir (por flujo):** trim en `loadJsonFile`, QuickLoad y
+     `onBlur` de inputs — lo que se ve es lo que se exporta, pero son varios
+     puntos de entrada.
+  3. **Al validar:** que `validate` reporte/corrija espacios — visible pero añade
+     fricción.
+  Nota: la carga desde storage ya pasa por el mismo `onLoad` que la carga local
+  (un solo punto de entrada), lo que favorece las opciones centralizadas.
+- **Hecho cuando:** Existe un único mecanismo compartido de trim, todos los
+  colectores lo usan (incluido QuickLoad), y se retiró el trim manual duplicado
+  de Cálculo Mental.
 - **Fecha:** 2026-07-15 · **Estado:** Abierto

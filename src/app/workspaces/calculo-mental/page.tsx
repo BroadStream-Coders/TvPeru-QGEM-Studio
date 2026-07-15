@@ -4,6 +4,7 @@ import { useEffect, useCallback } from "react";
 
 import { Calculator } from "lucide-react";
 import { saveAsJson, loadJsonFile } from "@/helpers/persistence";
+import { jsonBlob } from "@/helpers/storage";
 import { GroupsContainer } from "@/components/shared/group-column/layout/GroupsContainer";
 import { useWorkspaceHeader } from "@/hooks/use-workspace-header";
 import { useWorkspaceGroups } from "@/hooks/use-workspace-groups";
@@ -67,8 +68,8 @@ export default function CalculoMentalPage() {
     if (boards.length > 0) replaceGroup(groupIndex, boards);
   };
 
-  const handleSave = useCallback(() => {
-    const data: CalculoMentalData = {
+  const buildData = useCallback(
+    (): CalculoMentalData => ({
       groups: groups.map((boards) => ({
         boards: boards.map((board) => ({
           slots: board.slots.map((slot) => ({
@@ -77,9 +78,13 @@ export default function CalculoMentalPage() {
           })),
         })),
       })),
-    };
-    saveAsJson(DEFAULT_FILENAME, data);
-  }, [groups]);
+    }),
+    [groups],
+  );
+
+  const handleSave = useCallback(() => {
+    saveAsJson(DEFAULT_FILENAME, buildData());
+  }, [buildData]);
 
   const validate = useCallback((): ValidationIssue[] => {
     const issues: ValidationIssue[] = [];
@@ -142,8 +147,12 @@ export default function CalculoMentalPage() {
       onSave: handleSave,
       onLoad: handleLoad,
       validate,
+      upload: {
+        filename: "calculo-mental.json",
+        getBlob: () => jsonBlob(buildData()),
+      },
     });
-  }, [setHeader, handleSave, handleLoad, validate]);
+  }, [setHeader, handleSave, handleLoad, validate, buildData]);
 
   return (
     <main className="flex-1 overflow-hidden">

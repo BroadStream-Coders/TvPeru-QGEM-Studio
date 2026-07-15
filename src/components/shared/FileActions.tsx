@@ -4,12 +4,21 @@ import { useRef, useState } from "react";
 import { DropdownMenu } from "radix-ui";
 import { Button } from "@/components/ui/button";
 import {
+  AlertTriangle,
   ChevronDown,
   CloudDownload,
   CloudUpload,
   Download,
   Upload,
 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { ValidationDialog } from "./ValidationDialog";
 import { ValidationIssue } from "@/helpers/validation";
@@ -36,6 +45,13 @@ type UploadStatus = {
   text: string;
 };
 
+type ConfirmState = {
+  title: string;
+  body: string;
+  actionLabel: string;
+  action: () => void;
+};
+
 export function FileActions({
   format,
   onSave,
@@ -49,6 +65,7 @@ export function FileActions({
   const pendingActionRef = useRef<() => void>(() => {});
   const [issues, setIssues] = useState<ValidationIssue[]>([]);
   const [status, setStatus] = useState<UploadStatus | null>(null);
+  const [confirm, setConfirm] = useState<ConfirmState | null>(null);
   const { user } = useAuth();
 
   const showUpload = Boolean(upload && user);
@@ -159,14 +176,28 @@ export function FileActions({
                 className="z-50 w-56 rounded-lg border border-border bg-popover p-1.5 shadow-2xl"
               >
                 <DropdownMenu.Item
-                  onSelect={() => doDownload("oficial")}
+                  onSelect={() =>
+                    setConfirm({
+                      title: "Cargar oficial",
+                      body: "Esto reemplaza lo que tienes en pantalla con la sesión oficial del storage. Lo no guardado se pierde.",
+                      actionLabel: "Cargar",
+                      action: () => doDownload("oficial"),
+                    })
+                  }
                   className="flex h-[30px] cursor-pointer items-center gap-2.5 rounded-md px-2 text-[12.5px] text-foreground outline-none data-[highlighted]:bg-accent"
                 >
                   <CloudDownload className="h-3.5 w-3.5 text-brand" />
                   Cargar oficial
                 </DropdownMenu.Item>
                 <DropdownMenu.Item
-                  onSelect={() => doDownload("ejemplo")}
+                  onSelect={() =>
+                    setConfirm({
+                      title: "Cargar ejemplo",
+                      body: "Esto reemplaza lo que tienes en pantalla con la sesión de ejemplo del storage. Lo no guardado se pierde.",
+                      actionLabel: "Cargar",
+                      action: () => doDownload("ejemplo"),
+                    })
+                  }
                   className="flex h-[30px] cursor-pointer items-center gap-2.5 rounded-md px-2 text-[12.5px] text-muted-foreground outline-none data-[highlighted]:bg-accent"
                 >
                   <CloudDownload className="h-3.5 w-3.5" />
@@ -209,7 +240,14 @@ export function FileActions({
                 className="z-50 w-56 rounded-lg border border-border bg-popover p-1.5 shadow-2xl"
               >
                 <DropdownMenu.Item
-                  onSelect={() => runValidated(() => doUpload("oficial"))}
+                  onSelect={() =>
+                    setConfirm({
+                      title: "Subir como oficial",
+                      body: "Esto reemplaza la data oficial del storage — la que usará el programa. La subida anterior se pierde.",
+                      actionLabel: "Subir",
+                      action: () => runValidated(() => doUpload("oficial")),
+                    })
+                  }
                   className="flex h-[30px] cursor-pointer items-center gap-2.5 rounded-md px-2 text-[12.5px] text-foreground outline-none data-[highlighted]:bg-accent"
                 >
                   <CloudUpload className="h-3.5 w-3.5 text-brand" />
@@ -242,6 +280,31 @@ export function FileActions({
         onForceSave={handleForce}
         issues={issues}
       />
+
+      <Dialog open={confirm !== null} onOpenChange={(o) => !o && setConfirm(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <AlertTriangle className="size-5 text-brand" />
+              {confirm?.title}
+            </DialogTitle>
+            <DialogDescription>{confirm?.body}</DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setConfirm(null)}>
+              Cancelar
+            </Button>
+            <Button
+              onClick={() => {
+                confirm?.action();
+                setConfirm(null);
+              }}
+            >
+              {confirm?.actionLabel}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
