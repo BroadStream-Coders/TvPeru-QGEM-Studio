@@ -4,20 +4,30 @@ import { createClient } from "@/lib/supabase";
 
 interface AuthState {
   user: User | null;
+  hasAccess: boolean;
   loading: boolean;
 }
 
 export const useAuth = create<AuthState>(() => ({
   user: null,
+  hasAccess: false,
   loading: true,
 }));
 
 if (typeof window !== "undefined") {
   const supabase = createClient();
-  supabase.auth
-    .getUser()
-    .then(({ data }) => useAuth.setState({ user: data.user, loading: false }));
+
+  const applyUser = (user: User | null) => {
+    useAuth.setState({ user, hasAccess: false, loading: false });
+    if (!user) return;
+    setTimeout(async () => {
+      const { data } = await supabase.rpc("has_production_access");
+      useAuth.setState({ hasAccess: data === true });
+    }, 0);
+  };
+
+  supabase.auth.getUser().then(({ data }) => applyUser(data.user));
   supabase.auth.onAuthStateChange((_event, session) =>
-    useAuth.setState({ user: session?.user ?? null, loading: false }),
+    applyUser(session?.user ?? null),
   );
 }

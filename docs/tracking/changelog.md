@@ -12,6 +12,9 @@ Resumen en ≤2 líneas de lo que se hizo.
 
 ---
 
+## 2026-07-15 — [RM-006] Acceso "producción" gestionado en Supabase
+Tabla `production_access` (allowlist a mano en el dashboard) + `has_production_access()` usada por las policies y ahora también por la app: `use-auth` la consulta por RPC y `FileActions` oculta las opciones de storage a cuentas logueadas sin acceso.
+
 ## 2026-07-15 — [RM-010] Storage de Supabase (subir / bajar datos)
 Bucket privado `data` (carpetas `oficial/` y `ejemplo/`) con policies por allowlist (`production_access`). Split buttons en `FileActions` (Guardar→subir, Cargar→bajar, con confirmaciones) para los 8 colectores JSON; los ZIP quedan en RM-014.
 

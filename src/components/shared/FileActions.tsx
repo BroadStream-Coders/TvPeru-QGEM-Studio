@@ -66,9 +66,9 @@ export function FileActions({
   const [issues, setIssues] = useState<ValidationIssue[]>([]);
   const [status, setStatus] = useState<UploadStatus | null>(null);
   const [confirm, setConfirm] = useState<ConfirmState | null>(null);
-  const { user } = useAuth();
+  const { hasAccess } = useAuth();
 
-  const showUpload = Boolean(upload && user);
+  const showUpload = Boolean(upload && hasAccess);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

@@ -41,14 +41,6 @@ Al terminar una tarea se mueve al changelog y se borra de aquí.
 - **Dificultad:** 4/10
 - **Fecha:** 2026-06-11 · **Estado:** Abierto
 
-## [RM-006] Acceso "producción" gestionado en Supabase
-
-- **Objetivo:** Modelar un acceso de "producción" por cuenta, gestionado manualmente, que habilite las opciones de storage.
-- **Hecho cuando:** Existe un rol/flag de producción por cuenta, un mecanismo para darlo/quitarlo, y la app lo lee y lo expone; sin acceso, el usuario usa el sistema normal sin opciones de storage.
-- **Nota (2026-07-15):** el backend ya existe (tabla `production_access` editada a mano en el dashboard; las policies del bucket la consultan para leer y escribir). Lo que falta es la parte de UI: la app hoy muestra las opciones de storage a **cualquier** cuenta logueada (si no está en la lista, la operación falla con error); lo que queda es leer el flag en la app y ocultar las opciones a cuentas sin acceso.
-- **Dificultad:** 6/10 → restante 3/10
-- **Fecha:** 2026-06-11 · **Estado:** Abierto
-
 ## [RM-007] Telemetría: "Guardar de todos modos"
 
 - **Objetivo:** Registrar cuándo el usuario fuerza el guardado pese a la validación (primera métrica del sistema).
