@@ -58,5 +58,5 @@ El código está estructurado para maximizar la reutilización de componentes en
 - **IDs de entidades**: Siempre se utiliza `nanoid()` para generar IDs (ej. rondas, fotos), nunca índices de arreglos.
 
 El trabajo operativo (tareas, deuda técnica, ideas, terminado) se gestiona en
-`docs/tracking/`. El funcionamiento de los sistemas compartidos está documentado en
+`docs/logbook/`. El funcionamiento de los sistemas compartidos está documentado en
 `docs/systems/` (crop, validación, "Lego").
