@@ -14,6 +14,7 @@ import {
   HelpCircle,
   Shuffle,
   ToggleRight,
+  History,
 } from "lucide-react";
 
 const workspaces = [
@@ -88,6 +89,12 @@ const workspaces = [
     description: "Preguntas de verdadero o falso",
     href: "/workspaces/si-o-no",
     icon: ToggleRight,
+  },
+  {
+    name: "Cronos",
+    description: "Juego de línea de tiempo",
+    href: "/workspaces/cronos",
+    icon: History,
   },
 ];
 

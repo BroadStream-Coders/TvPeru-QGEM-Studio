@@ -115,3 +115,25 @@ Al terminar una tarea se mueve al changelog y se borra de aquí.
   `oficial/`/`ejemplo/` igual que los JSON, con una política de peso definida.
 - **Depende de:** RM-013 no; decisión de peso/imágenes sí.
 - **Fecha:** 2026-07-15 · **Estado:** Abierto
+
+## [RM-016] Reordenar eventos por drag & drop dentro de una columna (Cronos)
+
+- **Objetivo:** Poder arrastrar un evento (row) dentro de su columna para cambiar
+  el orden, ya que el orden es la respuesta del juego.
+- **Camino técnico sugerido:** reusar `@dnd-kit` (sortable) en vez de programar el
+  arrastre a mano; el orden persistido ya es el orden del array de la columna.
+- **Hecho cuando:** El usuario puede reordenar los eventos de una columna
+  arrastrándolos, y el nuevo orden se refleja al exportar.
+- **Fecha:** 2026-08-04 · **Estado:** Abierto
+
+## [RM-017] Llenado rápido leyendo el portapapeles directamente (Cronos)
+
+- **Objetivo:** Agregar al llenado rápido un botón tipo toggle que, al pulsarlo,
+  lea el portapapeles directamente (Clipboard API) y ejecute el llenado, sin
+  tener que pegar en el textarea ni enviar manualmente.
+- **Detalle:** al presionar el botón se hace `navigator.clipboard.readText()` y se
+  reutiliza el mismo parseo/llenado actual (2 columnas: fecha, título; ignora
+  lo que pase de 5). Contemplar el permiso de portapapeles del navegador.
+- **Hecho cuando:** Con datos copiados de Excel, un clic en el botón llena la
+  columna sin pasar por el textarea.
+- **Fecha:** 2026-08-04 · **Estado:** Abierto
