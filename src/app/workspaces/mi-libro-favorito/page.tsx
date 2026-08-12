@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { BookOpen } from "lucide-react";
 import { saveAsJson, loadJsonFile } from "@/helpers/persistence";
-import { jsonBlob } from "@/helpers/storage";
 import { GroupsContainer } from "@/components/shared/group-column/layout/GroupsContainer";
 import { useWorkspaceHeader } from "@/hooks/use-workspace-header";
 import { useWorkspaceGroups } from "@/hooks/use-workspace-groups";
@@ -157,12 +156,8 @@ export default function MiLibroFavoritoPage() {
       onSave: handleSave,
       onLoad: handleLoad,
       validate,
-      upload: {
-        filename: DEFAULT_FILENAME,
-        getBlob: () => jsonBlob(buildData()),
-      },
     });
-  }, [setHeader, handleSave, handleLoad, validate, buildData]);
+  }, [setHeader, handleSave, handleLoad, validate]);
 
   return (
     <main className="flex-1 overflow-hidden">

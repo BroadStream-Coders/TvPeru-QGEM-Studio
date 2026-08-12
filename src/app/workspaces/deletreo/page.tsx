@@ -3,7 +3,6 @@
 import { useEffect, useCallback } from "react";
 import { SpellCheck } from "lucide-react";
 import { saveAsJson, loadJsonFile } from "@/helpers/persistence";
-import { jsonBlob } from "@/helpers/storage";
 import { getColumnData } from "@/helpers/data-processing";
 import { GroupsContainer } from "@/components/shared/group-column/layout/GroupsContainer";
 import { useWorkspaceHeader } from "@/hooks/use-workspace-header";
@@ -96,12 +95,8 @@ export default function DeletreoPage() {
       onSave: handleSave,
       onLoad: handleLoad,
       validate,
-      upload: {
-        filename: DEFAULT_FILENAME,
-        getBlob: () => jsonBlob(buildData()),
-      },
     });
-  }, [setHeader, handleSave, handleLoad, validate, buildData]);
+  }, [setHeader, handleSave, handleLoad, validate]);
 
   return (
     <main className="flex-1 overflow-hidden">

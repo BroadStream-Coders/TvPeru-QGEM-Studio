@@ -5,7 +5,6 @@ import { Sigma } from "lucide-react";
 import { nanoid } from "nanoid";
 import { useWorkspaceHeader } from "@/hooks/use-workspace-header";
 import { saveAsJson, loadJsonFile } from "@/helpers/persistence";
-import { jsonBlob } from "@/helpers/storage";
 import { ValidationIssue, isBlank, formatPath } from "@/helpers/validation";
 
 import { RoundData, BoardData, Operation, Direction } from "./types";
@@ -203,14 +202,10 @@ export default function OperacionesCombinadasPage() {
       onSave: handleSave,
       onLoad: handleLoad,
       validate,
-      upload: {
-        filename: DEFAULT_FILENAME,
-        getBlob: () => jsonBlob(buildData()),
-      },
     });
 
     return () => resetHeader();
-  }, [setHeader, resetHeader, handleSave, handleLoad, validate, buildData]);
+  }, [setHeader, resetHeader, handleSave, handleLoad, validate]);
 
   // Sync selectedBoardId with currentRound if navigating causes mismatch is handled by handlers natively
 

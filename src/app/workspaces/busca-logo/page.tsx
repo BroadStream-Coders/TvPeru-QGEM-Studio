@@ -5,7 +5,6 @@ import { Search } from "lucide-react";
 import { nanoid } from "nanoid";
 import { useWorkspaceHeader } from "@/hooks/use-workspace-header";
 import { saveAsJson, loadJsonFile } from "@/helpers/persistence";
-import { jsonBlob } from "@/helpers/storage";
 import { ValidationIssue, formatPath } from "@/helpers/validation";
 
 import { BoardData, isValidBoardSize } from "./types";
@@ -111,14 +110,10 @@ export default function BuscaLogoPage() {
       onSave: handleSave,
       onLoad: handleLoad,
       validate,
-      upload: {
-        filename: DEFAULT_FILENAME,
-        getBlob: () => jsonBlob(buildData()),
-      },
     });
 
     return () => resetHeader();
-  }, [setHeader, resetHeader, handleSave, handleLoad, validate, buildData]);
+  }, [setHeader, resetHeader, handleSave, handleLoad, validate]);
 
   const handleAddBoard = () => {
     if (boards.length >= MAX_BOARDS) return;

@@ -12,6 +12,9 @@ Resumen en ≤2 líneas de lo que se hizo.
 
 ---
 
+## [RM-022] Quitar el contrato `upload` del header y `helpers/storage.ts` (2026-08-12 09:43)
+Fuera `upload?: SessionUpload` del store del header y el bloque `upload: { filename, getBlob }` de los 9 colectores JSON (con su import de `jsonBlob`); borrado `src/helpers/storage.ts`. `DEFAULT_FILENAME` queda solo para el guardado local.
+
 ## [RM-021] Quitar la UI de storage de `FileActions` (2026-08-12 09:34)
 `FileActions` vuelve a dos botones locales (Cargar / Guardar): fuera split buttons, dropdowns oficial/ejemplo, diálogo de confirmación, indicador de estado y gate `hasAccess`; se conservan `runValidated` y `ValidationDialog`. `WorkspaceHeader` ya no pasa `upload`.
 

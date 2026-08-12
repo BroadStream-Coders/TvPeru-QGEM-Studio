@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { ToggleRight } from "lucide-react";
 import { saveAsJson, loadJsonFile } from "@/helpers/persistence";
-import { jsonBlob } from "@/helpers/storage";
 import { GroupsContainer } from "@/components/shared/group-column/layout/GroupsContainer";
 import { useWorkspaceHeader } from "@/hooks/use-workspace-header";
 import { ValidationIssue, isBlank, formatPath } from "@/helpers/validation";
@@ -220,12 +219,8 @@ export default function AlVueloPage() {
       onSave: handleSave,
       onLoad: handleLoad,
       validate,
-      upload: {
-        filename: DEFAULT_FILENAME,
-        getBlob: () => jsonBlob(buildData()),
-      },
     });
-  }, [setHeader, handleSave, handleLoad, validate, buildData]);
+  }, [setHeader, handleSave, handleLoad, validate]);
 
   // ── Render ──
 

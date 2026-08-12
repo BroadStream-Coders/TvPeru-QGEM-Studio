@@ -126,25 +126,6 @@ el orden va de la punta (UI) hacia la raíz (cliente y credenciales).
 > RM-014 (storage para colectores ZIP) y RM-007 (telemetría de "Guardar de todos
 > modos", que dependía de la sesión).
 
-## [RM-022] Quitar el contrato `upload` del header y `helpers/storage.ts`
-
-- **Objetivo:** Borrar la pieza de datos que alimentaba al storage, ahora que
-  nadie la consume.
-- **Alcance:** quitar `upload?: SessionUpload` de `use-workspace-header.ts` y del
-  `WorkspaceHeader`; quitar el bloque `upload: { filename, getBlob }` de los 9
-  colectores JSON (al-vuelo, busca-logo, calculo-mental, deletreo, la-sabes-o-no,
-  mi-libro-favorito, operaciones-combinadas, reto-cruzado, tres-en-raya); borrar
-  `src/helpers/storage.ts` completo (`uploadSession`, `downloadSession`,
-  `SessionUpload`, `UploadTarget`, `jsonBlob`). Ojo: `jsonBlob` se va con el
-  archivo y hoy lo importan esos 9 colectores solo para `getBlob` — al quitar el
-  bloque `upload` deja de usarse; verificar que no quede ningún import huérfano.
-- **Hecho cuando:** No existe `helpers/storage.ts`, ningún workspace importa
-  `jsonBlob`, `DEFAULT_FILENAME` sigue usándose solo para el guardado local y el
-  build está limpio.
-- **Dificultad:** 4/10
-- **Depende de:** RM-021
-- **Fecha:** 2026-08-12 · **Estado:** Abierto
-
 ## [RM-023] Quitar el login con Google
 
 - **Objetivo:** Sacar las cuentas de la app: ni sesión, ni avatar, ni RPC de

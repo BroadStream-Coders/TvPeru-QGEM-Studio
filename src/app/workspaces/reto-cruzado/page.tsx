@@ -3,7 +3,6 @@
 import { useRef, useEffect, useCallback } from "react";
 import { Layers, Shuffle } from "lucide-react";
 import { saveAsJson, loadJsonFile } from "@/helpers/persistence";
-import { jsonBlob } from "@/helpers/storage";
 import { useWorkspaceHeader } from "@/hooks/use-workspace-header";
 import { LevelTabs } from "@/components/shared/LevelTabs";
 import { nanoid } from "nanoid";
@@ -194,12 +193,8 @@ export default function RetoCruzadoPage() {
       format: "json",
       onSave: handleSave,
       onLoad: handleLoad,
-      upload: {
-        filename: DEFAULT_FILENAME,
-        getBlob: () => jsonBlob(buildData()),
-      },
     });
-  }, [setHeader, handleSave, handleLoad, buildData]);
+  }, [setHeader, handleSave, handleLoad]);
 
   return (
     <main className="flex-1 overflow-hidden">
