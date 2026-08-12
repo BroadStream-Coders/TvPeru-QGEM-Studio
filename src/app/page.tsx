@@ -85,9 +85,9 @@ const workspaces = [
     icon: Search,
   },
   {
-    name: "Si o No",
+    name: "Al Vuelo",
     description: "Preguntas de verdadero o falso",
-    href: "/workspaces/si-o-no",
+    href: "/workspaces/al-vuelo",
     icon: ToggleRight,
   },
   {

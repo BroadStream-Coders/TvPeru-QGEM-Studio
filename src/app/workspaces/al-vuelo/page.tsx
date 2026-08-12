@@ -42,7 +42,7 @@ const createEmptyColumn = (): ColumnData => ({
   rows: [createEmptyRow()],
 });
 
-export default function SiONoPage() {
+export default function AlVueloPage() {
   const [columns, setColumns] = useState<ColumnData[]>([createEmptyColumn()]);
 
   const setHeader = useWorkspaceHeader((s) => s.setHeader);
@@ -214,7 +214,7 @@ export default function SiONoPage() {
 
   useEffect(() => {
     setHeader({
-      title: "Si o No",
+      title: "Al Vuelo",
       icon: <ToggleRight className="size-3" />,
       format: "json",
       onSave: handleSave,

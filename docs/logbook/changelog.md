@@ -12,6 +12,9 @@ Resumen en ≤2 líneas de lo que se hizo.
 
 ---
 
+## [RM-018] Colector "Si o No" renombrado a "Al Vuelo" (2026-08-12 09:03)
+Cambio de nombre del juego: carpeta y ruta `si-o-no` → `al-vuelo`, título del header y entrada del home. El nombre del JSON exportado sigue siendo `SiONo.json` (contrato con Unity/storage).
+
 ## [RM-015] Colector Cronos (línea de tiempo) (2026-08-04 09:41)
 Nuevo workspace `cronos` con estructura columns/rows: columnas de 5 eventos fijos, cada evento con fecha y título (inputs) e imagen con recorte cuadrado; export/import ZIP, validación, carga rápida (lógica provisional) y entrada en el home.
 

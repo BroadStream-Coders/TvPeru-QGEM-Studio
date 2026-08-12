@@ -137,3 +137,12 @@ Al terminar una tarea se mueve al changelog y se borra de aquí.
 - **Hecho cuando:** Con datos copiados de Excel, un clic en el botón llena la
   columna sin pasar por el textarea.
 - **Fecha:** 2026-08-04 · **Estado:** Abierto
+
+## [RM-019] Colector "Tres en Raya"
+
+- **Objetivo:** Crear el colector del juego "Tres en Raya" siguiendo la
+  arquitectura común (workspace propio con `page.tsx` que registra header vía
+  `setHeader`, componentes en `components/`, validación previa a exportar).
+- **Hecho cuando:** El colector existe en `src/app/workspaces/tres-en-raya`,
+  aparece en el home, exporta/importa su formato y valida antes de exportar.
+- **Fecha:** 2026-08-12 · **Estado:** Abierto
