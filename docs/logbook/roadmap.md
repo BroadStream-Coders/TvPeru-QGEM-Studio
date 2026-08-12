@@ -126,21 +126,6 @@ el orden va de la punta (UI) hacia la raíz (cliente y credenciales).
 > RM-014 (storage para colectores ZIP) y RM-007 (telemetría de "Guardar de todos
 > modos", que dependía de la sesión).
 
-## [RM-021] Quitar la UI de storage de `FileActions`
-
-- **Objetivo:** Devolver `FileActions` a dos botones simples (Guardar / Cargar),
-  sin nube: fuera los split buttons, los dropdowns "oficial/ejemplo", el diálogo
-  de confirmación de subida/bajada, el indicador de estado y el gate `hasAccess`.
-- **Alcance:** `src/components/shared/FileActions.tsx` — quitar `doUpload`,
-  `doDownload`, `UploadStatus`, `ConfirmState`, el `Dialog` de confirmación, el
-  import de `useAuth` y los de `@/helpers/storage`. Se conservan la validación
-  previa (`runValidated`) y el `ValidationDialog`.
-- **Hecho cuando:** El header muestra solo Guardar y Cargar locales, la
-  validación previa sigue funcionando y `FileActions` no importa nada de
-  Supabase.
-- **Dificultad:** 4/10
-- **Fecha:** 2026-08-12 · **Estado:** Abierto
-
 ## [RM-022] Quitar el contrato `upload` del header y `helpers/storage.ts`
 
 - **Objetivo:** Borrar la pieza de datos que alimentaba al storage, ahora que

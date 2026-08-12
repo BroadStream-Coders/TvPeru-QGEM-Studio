@@ -12,6 +12,9 @@ Resumen en ≤2 líneas de lo que se hizo.
 
 ---
 
+## [RM-021] Quitar la UI de storage de `FileActions` (2026-08-12 09:34)
+`FileActions` vuelve a dos botones locales (Cargar / Guardar): fuera split buttons, dropdowns oficial/ejemplo, diálogo de confirmación, indicador de estado y gate `hasAccess`; se conservan `runValidated` y `ValidationDialog`. `WorkspaceHeader` ya no pasa `upload`.
+
 ## [RM-020] Quitar la ruta de diagnóstico `/test-supabase` (2026-08-12 09:32)
 Borrada `src/app/test-supabase/` (única dependencia aislada de Supabase, sin enlaces desde ninguna pantalla). Primer paso del retiro de Supabase.
 
