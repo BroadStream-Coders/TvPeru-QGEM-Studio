@@ -12,6 +12,9 @@ Resumen en ≤2 líneas de lo que se hizo.
 
 ---
 
+## [RM-019] Colector "Tres en Raya" (2026-08-12 09:10)
+Workspace `tres-en-raya`: rondas (columnas) de 9 casillas fijas, cada una con pregunta y respuesta separadas; export/import JSON (`TresEnRaya.json`), validación, carga rápida de 2 columnas y entrada en el home.
+
 ## [RM-018] Colector "Si o No" renombrado a "Al Vuelo" (2026-08-12 09:03)
 Cambio de nombre del juego: carpeta y ruta `si-o-no` → `al-vuelo`, título del header y entrada del home. El nombre del JSON exportado sigue siendo `SiONo.json` (contrato con Unity/storage).
 

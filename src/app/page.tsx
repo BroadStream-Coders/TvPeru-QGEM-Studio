@@ -10,6 +10,7 @@ import {
   Image as ImageIcon,
   Trophy,
   Grid2x2,
+  Grid3x3,
   Sigma,
   HelpCircle,
   Shuffle,
@@ -89,6 +90,12 @@ const workspaces = [
     description: "Preguntas de verdadero o falso",
     href: "/workspaces/al-vuelo",
     icon: ToggleRight,
+  },
+  {
+    name: "Tres en Raya",
+    description: "Tablero de 9 preguntas con respuesta",
+    href: "/workspaces/tres-en-raya",
+    icon: Grid3x3,
   },
   {
     name: "Cronos",

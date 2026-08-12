@@ -41,14 +41,6 @@ Al terminar una tarea se mueve al changelog y se borra de aquí.
 - **Dificultad:** 4/10
 - **Fecha:** 2026-06-11 · **Estado:** Abierto
 
-## [RM-007] Telemetría: "Guardar de todos modos"
-
-- **Objetivo:** Registrar cuándo el usuario fuerza el guardado pese a la validación (primera métrica del sistema).
-- **Hecho cuando:** Al pulsar "Guardar de todos modos" en `ValidationDialog` se emite un evento con contexto mínimo (colector, fecha, usuario si hay sesión) a su destino definido.
-- **Dificultad:** 4/10
-- **Depende de:** RM-005
-- **Fecha:** 2026-06-11 · **Estado:** Abierto
-
 ## [RM-008] Documentar schema JSON para Unity
 
 - **Objetivo:** Documentar el contrato JSON esperado por el equipo de Unity, por cada juego.
@@ -98,24 +90,6 @@ Al terminar una tarea se mueve al changelog y se borra de aquí.
   de Cálculo Mental.
 - **Fecha:** 2026-07-15 · **Estado:** Abierto
 
-## [RM-014] Storage para colectores ZIP (bundles con imágenes)
-
-- **Objetivo:** Extender la subida/bajada al storage (RM-010, ya operativa para
-  los 8 colectores JSON) a los 4 colectores ZIP: Álbum, Intruso, Galería de
-  Fotos y De par en par.
-- **Bloqueado por (decisión de Esteban, 2026-07-15):** antes hay que resolver el
-  tema del **peso de las imágenes** (tamaño de los bundles a subir/bajar,
-  posible compresión/redimensionado, cuota del bucket). No implementar hasta
-  tener esa conversación.
-- **Camino técnico ya identificado:** separar en `persistence.ts` un
-  `buildZipBlob(jsonData, files)` que `saveAsZip` y el `getBlob` del `upload`
-  compartan (mismo refactor que `buildData` en los JSON); el resto (split
-  buttons, confirmaciones, gate de login) ya lo da `FileActions` gratis.
-- **Hecho cuando:** Los 4 colectores ZIP suben y bajan su bundle de
-  `oficial/`/`ejemplo/` igual que los JSON, con una política de peso definida.
-- **Depende de:** RM-013 no; decisión de peso/imágenes sí.
-- **Fecha:** 2026-07-15 · **Estado:** Abierto
-
 ## [RM-016] Reordenar eventos por drag & drop dentro de una columna (Cronos)
 
 - **Objetivo:** Poder arrastrar un evento (row) dentro de su columna para cambiar
@@ -138,11 +112,101 @@ Al terminar una tarea se mueve al changelog y se borra de aquí.
   columna sin pasar por el textarea.
 - **Fecha:** 2026-08-04 · **Estado:** Abierto
 
-## [RM-019] Colector "Tres en Raya"
+---
 
-- **Objetivo:** Crear el colector del juego "Tres en Raya" siguiendo la
-  arquitectura común (workspace propio con `page.tsx` que registra header vía
-  `setHeader`, componentes en `components/`, validación previa a exportar).
-- **Hecho cuando:** El colector existe en `src/app/workspaces/tres-en-raya`,
-  aparece en el home, exporta/importa su formato y valida antes de exportar.
+## Retiro de Supabase (RM-020 → RM-025)
+
+Decisión (2026-08-12): sacar del proyecto todo lo que depende de Supabase —
+cuentas de Google, el SQL de permisos y el storage— y volver a un colector
+puramente local (archivo JSON/ZIP que el usuario guarda y carga a mano).
+Se hace en pasos: cada RM deja el proyecto compilando y usable por sí solo, y
+el orden va de la punta (UI) hacia la raíz (cliente y credenciales).
+
+> Descartadas el 2026-08-12 por esta decisión (sus códigos no se reutilizan):
+> RM-014 (storage para colectores ZIP) y RM-007 (telemetría de "Guardar de todos
+> modos", que dependía de la sesión).
+
+## [RM-020] Quitar la ruta de diagnóstico `/test-supabase`
+
+- **Objetivo:** Eliminar la página de prueba de conexión, que es la dependencia
+  más aislada de todas y no la usa nadie en producción.
+- **Alcance:** borrar `src/app/test-supabase/`.
+- **Hecho cuando:** La ruta `/test-supabase` ya no existe y el build sigue limpio.
+- **Dificultad:** 1/10
+- **Fecha:** 2026-08-12 · **Estado:** Abierto
+
+## [RM-021] Quitar la UI de storage de `FileActions`
+
+- **Objetivo:** Devolver `FileActions` a dos botones simples (Guardar / Cargar),
+  sin nube: fuera los split buttons, los dropdowns "oficial/ejemplo", el diálogo
+  de confirmación de subida/bajada, el indicador de estado y el gate `hasAccess`.
+- **Alcance:** `src/components/shared/FileActions.tsx` — quitar `doUpload`,
+  `doDownload`, `UploadStatus`, `ConfirmState`, el `Dialog` de confirmación, el
+  import de `useAuth` y los de `@/helpers/storage`. Se conservan la validación
+  previa (`runValidated`) y el `ValidationDialog`.
+- **Hecho cuando:** El header muestra solo Guardar y Cargar locales, la
+  validación previa sigue funcionando y `FileActions` no importa nada de
+  Supabase.
+- **Dificultad:** 4/10
+- **Fecha:** 2026-08-12 · **Estado:** Abierto
+
+## [RM-022] Quitar el contrato `upload` del header y `helpers/storage.ts`
+
+- **Objetivo:** Borrar la pieza de datos que alimentaba al storage, ahora que
+  nadie la consume.
+- **Alcance:** quitar `upload?: SessionUpload` de `use-workspace-header.ts` y del
+  `WorkspaceHeader`; quitar el bloque `upload: { filename, getBlob }` de los 9
+  colectores JSON (al-vuelo, busca-logo, calculo-mental, deletreo, la-sabes-o-no,
+  mi-libro-favorito, operaciones-combinadas, reto-cruzado, tres-en-raya); borrar
+  `src/helpers/storage.ts` completo (`uploadSession`, `downloadSession`,
+  `SessionUpload`, `UploadTarget`, `jsonBlob`). Ojo: `jsonBlob` se va con el
+  archivo y hoy lo importan esos 9 colectores solo para `getBlob` — al quitar el
+  bloque `upload` deja de usarse; verificar que no quede ningún import huérfano.
+- **Hecho cuando:** No existe `helpers/storage.ts`, ningún workspace importa
+  `jsonBlob`, `DEFAULT_FILENAME` sigue usándose solo para el guardado local y el
+  build está limpio.
+- **Dificultad:** 4/10
+- **Depende de:** RM-021
+- **Fecha:** 2026-08-12 · **Estado:** Abierto
+
+## [RM-023] Quitar el login con Google
+
+- **Objetivo:** Sacar las cuentas de la app: ni sesión, ni avatar, ni RPC de
+  permisos.
+- **Alcance:** borrar `src/components/shared/AuthButton.tsx` y
+  `src/hooks/use-auth.ts` (incluye la llamada `supabase.rpc("has_production_access")`
+  y el `onAuthStateChange`); quitar el `<AuthButton />` del header de
+  `src/app/page.tsx` y de `src/components/shared/WorkspaceHeader.tsx`.
+- **Hecho cuando:** No hay botón de iniciar/cerrar sesión en ninguna pantalla,
+  ningún archivo llama a `supabase.auth` y el build está limpio.
+- **Dificultad:** 3/10
+- **Depende de:** RM-021 (el gate `hasAccess` debe haber salido antes)
+- **Fecha:** 2026-08-12 · **Estado:** Abierto
+
+## [RM-024] Quitar el cliente, las dependencias y las credenciales de Supabase
+
+- **Objetivo:** Que el repo no sepa que Supabase existió.
+- **Alcance:** borrar `src/lib/supabase.ts`; desinstalar `@supabase/ssr` y
+  `@supabase/supabase-js` (`pnpm remove`, commitear el lockfile); quitar
+  `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` de
+  `.env.local` y de cualquier config de despliegue.
+- **Hecho cuando:** `grep -ri supabase src/` no devuelve nada, las dependencias
+  ya no están en `package.json` y el build está limpio.
+- **Dificultad:** 2/10
+- **Depende de:** RM-020, RM-022, RM-023
+- **Fecha:** 2026-08-12 · **Estado:** Abierto
+
+## [RM-025] Desmontar el backend en el dashboard de Supabase
+
+- **Objetivo:** Apagar lo que vive fuera del repo, una vez que la app ya no lo
+  toca.
+- **Alcance (manual, lo hace Esteban en el dashboard):** bajar el bucket privado
+  `data` (guardando antes los JSON de `oficial/` y `ejemplo/` que se quieran
+  conservar), borrar la tabla `production_access` y sus policies, borrar la
+  función `has_production_access()`, desactivar el provider de Google en Auth y
+  finalmente pausar o borrar el proyecto.
+- **Hecho cuando:** No queda bucket, tabla, función ni provider activo, y hay
+  copia local de los datos que valía la pena rescatar.
+- **Dificultad:** 2/10
+- **Depende de:** RM-024
 - **Fecha:** 2026-08-12 · **Estado:** Abierto
