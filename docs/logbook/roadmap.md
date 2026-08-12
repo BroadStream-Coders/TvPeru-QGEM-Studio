@@ -126,15 +126,6 @@ el orden va de la punta (UI) hacia la raíz (cliente y credenciales).
 > RM-014 (storage para colectores ZIP) y RM-007 (telemetría de "Guardar de todos
 > modos", que dependía de la sesión).
 
-## [RM-020] Quitar la ruta de diagnóstico `/test-supabase`
-
-- **Objetivo:** Eliminar la página de prueba de conexión, que es la dependencia
-  más aislada de todas y no la usa nadie en producción.
-- **Alcance:** borrar `src/app/test-supabase/`.
-- **Hecho cuando:** La ruta `/test-supabase` ya no existe y el build sigue limpio.
-- **Dificultad:** 1/10
-- **Fecha:** 2026-08-12 · **Estado:** Abierto
-
 ## [RM-021] Quitar la UI de storage de `FileActions`
 
 - **Objetivo:** Devolver `FileActions` a dos botones simples (Guardar / Cargar),
