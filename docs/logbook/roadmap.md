@@ -126,20 +126,6 @@ el orden va de la punta (UI) hacia la raíz (cliente y credenciales).
 > RM-014 (storage para colectores ZIP) y RM-007 (telemetría de "Guardar de todos
 > modos", que dependía de la sesión).
 
-## [RM-023] Quitar el login con Google
-
-- **Objetivo:** Sacar las cuentas de la app: ni sesión, ni avatar, ni RPC de
-  permisos.
-- **Alcance:** borrar `src/components/shared/AuthButton.tsx` y
-  `src/hooks/use-auth.ts` (incluye la llamada `supabase.rpc("has_production_access")`
-  y el `onAuthStateChange`); quitar el `<AuthButton />` del header de
-  `src/app/page.tsx` y de `src/components/shared/WorkspaceHeader.tsx`.
-- **Hecho cuando:** No hay botón de iniciar/cerrar sesión en ninguna pantalla,
-  ningún archivo llama a `supabase.auth` y el build está limpio.
-- **Dificultad:** 3/10
-- **Depende de:** RM-021 (el gate `hasAccess` debe haber salido antes)
-- **Fecha:** 2026-08-12 · **Estado:** Abierto
-
 ## [RM-024] Quitar el cliente, las dependencias y las credenciales de Supabase
 
 - **Objetivo:** Que el repo no sepa que Supabase existió.

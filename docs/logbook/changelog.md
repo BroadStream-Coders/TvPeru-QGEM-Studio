@@ -12,6 +12,9 @@ Resumen en ≤2 líneas de lo que se hizo.
 
 ---
 
+## [RM-023] Quitar el login con Google (2026-08-12 13:24)
+Borrados `AuthButton.tsx` y `use-auth.ts` (sesión, avatar y el RPC `has_production_access`); fuera el botón de cuenta del home y del `WorkspaceHeader`. Ya nada en `src/` llama a `supabase.auth`.
+
 ## [RM-022] Quitar el contrato `upload` del header y `helpers/storage.ts` (2026-08-12 09:43)
 Fuera `upload?: SessionUpload` del store del header y el bloque `upload: { filename, getBlob }` de los 9 colectores JSON (con su import de `jsonBlob`); borrado `src/helpers/storage.ts`. `DEFAULT_FILENAME` queda solo para el guardado local.
 
