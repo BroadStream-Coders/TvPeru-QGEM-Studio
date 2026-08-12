@@ -12,6 +12,12 @@ Resumen en ≤2 líneas de lo que se hizo.
 
 ---
 
+## [RM-025] Desmontar el backend en el dashboard de Supabase (2026-08-12 13:28)
+Bajados bucket `data`, tabla `production_access` con sus policies, función `has_production_access()` y el provider de Google. Con esto cierra el retiro de Supabase (RM-020 → RM-025): QGEM Studio vuelve a ser un colector puramente local.
+
+## [RM-024] Quitar el cliente, las dependencias y las credenciales de Supabase (2026-08-12 13:26)
+Borrados `src/lib/supabase.ts` y `.env.local` (solo tenía las 2 claves); desinstalados `@supabase/ssr` y `@supabase/supabase-js` (-9 paquetes). El repo ya no menciona Supabase fuera del logbook; queda solo el desmontaje del dashboard (RM-025).
+
 ## [RM-023] Quitar el login con Google (2026-08-12 13:24)
 Borrados `AuthButton.tsx` y `use-auth.ts` (sesión, avatar y el RPC `has_production_access`); fuera el botón de cuenta del home y del `WorkspaceHeader`. Ya nada en `src/` llama a `supabase.auth`.
 
