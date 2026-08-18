@@ -15,13 +15,13 @@ const BOARD_SIZE = 9;
 
 // ── Tipos del JSON de exportación ──
 
-interface QuestionExport {
+interface SlotExport {
   question: string;
   answer: string;
 }
 
 interface GroupExport {
-  questions: QuestionExport[];
+  slots: SlotExport[];
 }
 
 interface SessionData {
@@ -96,7 +96,7 @@ export default function TresEnRayaPage() {
   const buildData = useCallback(
     (): SessionData => ({
       groups: columns.map((rows) => ({
-        questions: rows.map((r) => ({
+        slots: rows.map((r) => ({
           question: r.question.trim(),
           answer: r.answer.trim(),
         })),
@@ -121,7 +121,7 @@ export default function TresEnRayaPage() {
       if (data?.groups) {
         const loaded = data.groups.map((g) =>
           toBoard(
-            (g.questions || []).map((q) => ({
+            (g.slots || []).map((q) => ({
               id: nanoid(),
               question: q.question || "",
               answer: q.answer || "",
